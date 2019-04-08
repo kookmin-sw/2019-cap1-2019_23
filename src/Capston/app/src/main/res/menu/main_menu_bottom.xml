@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navigation_menu1"
+        android:icon="@drawable/outline_home_black_36"
+        android:title="홈" />
+
+    <item
+        android:id="@+id/navigation_menu2"
+        android:icon="@drawable/baseline_find_in_page_black_36"
+        android:title="책찾기" />
+
+    <item
+        android:id="@+id/navigation_menu3"
+        android:icon="@drawable/baseline_chrome_reader_mode_black_36"
+        android:title="MyBook" />
+
+    <item
+        android:id="@+id/navigation_menu4"
+        android:icon="@drawable/outline_create_black_36"
+        android:title="내 서재" />
+</menu>

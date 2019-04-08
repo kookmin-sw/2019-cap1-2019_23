@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+
+    android:background="@color/colorOrange1"
+    tools:context=".LoginActivity">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Login"
+        android:textSize="60dp"
+        android:gravity="center"
+        android:layout_marginBottom="130dp"
+        android:layout_marginTop="100dp"/>
+
+    <EditText
+        android:id="@+id/login_email_edit"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="10dp"
+        android:hint="Email"
+        android:textSize="24dp"
+        android:background="@color/colorOrange2"
+        tools:ignore="HardcodedText"/>
+
+
+    <EditText
+        android:id="@+id/login_pw_edit"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:hint="PassWord"
+        android:textSize="24dp"
+        android:background="@color/colorOrange2"
+        android:inputType="textPassword"
+        tools:ignore="HardcodedText"/>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="24dp"
+
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/login_signup_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="15dp"
+            android:layout_marginLeft="80dp"
+            android:text="Sign Up"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/buttonbackground"
+            tools:ignore="HardcodedText" />
+        <Button
+            android:id="@+id/login_signin_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="80dp"
+            android:layout_marginLeft="15dp"
+            android:text="Login"
+            android:textColor="#FFFFFF"
+            android:textAllCaps="false"
+            android:background="@drawable/buttonbackground"
+            tools:ignore="HardcodedText" />
+    </LinearLayout>
+
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/btn_googleSignIn"
+        android:layout_width="210dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:textAlignment="center"
+        android:layout_gravity="center"
+       >
+
+    </com.google.android.gms.common.SignInButton>
+</LinearLayout>
