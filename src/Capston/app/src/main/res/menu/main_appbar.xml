@@ -10,10 +10,5 @@
         app:actionViewClass="android.support.v7.widget.SearchView"
         app:showAsAction="always|collapseActionView" />
 
-    <item
-        android:id="@+id/item2"
-        android:icon="@android:drawable/btn_star_big_on"
-        android:title="메뉴3"
-        app:showAsAction="always" />
 
 </menu>
