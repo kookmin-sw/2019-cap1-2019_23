@@ -1,6 +1,10 @@
 package com.example.capston;
 
+import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -33,6 +37,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     // 파이어베이스 인증 객체 생성
     private FirebaseAuth mAuth;
 
+    CustomProgressDialog customProgressDialog;
+    // 체크할 권한 목록
+    String[] permission_list = {
+            Manifest.permission.INTERNET,
+            Manifest.permission.READ_CONTACTS,
+            Manifest.permission.WRITE_CONTACTS,
+            Manifest.permission.CAMERA
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,14 +61,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         emailEditText = (EditText) findViewById(R.id.login_email_edit);
         pwEditText = (EditText) findViewById(R.id.login_pw_edit);
 
-
+        customProgressDialog = new CustomProgressDialog(this);
 
         findViewById(R.id.login_signup_button).setOnClickListener(this);
         findViewById(R.id.login_signin_button).setOnClickListener(this);
-
-
-
-
+        checkPermission();
     }
 
     @Override
@@ -79,6 +89,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 else{
                     Log.d("test", userEmail);
                     Log.d("test", userPW);
+
+
+                    customProgressDialog.show();
                     mAuth.signInWithEmailAndPassword(userEmail, userPW)
                             .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                                 @Override
@@ -89,8 +102,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                         FirebaseUser user = mAuth.getCurrentUser();
                                         startActivity(new Intent(LoginActivity.this, MainActivity.class));
                                         finish();
+
                                     } else {
                                         // If sign in fails, display a message to the user.
+                                        customProgressDialog.dismiss();
                                         Log.w("test", "signInWithEmail:failure", task.getException());
                                         Toast.makeText(LoginActivity.this, "Authentication failed.",
                                                 Toast.LENGTH_SHORT).show();
@@ -102,5 +117,29 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 }
                 break;
         }
+    }
+
+    //권한 확인 메소드
+    public void checkPermission(){
+        //현재 안드로이드 버젼이 6.0 미만이면 메소드 종료
+        if(Build.VERSION.SDK_INT<= Build.VERSION_CODES.M){
+            return ;
+        }
+        // 각 권한의 확인 여부
+        for(String permission :permission_list){
+            // 권한 허용 여부를 확인한다.
+            int chk = checkCallingOrSelfPermission(permission);
+            // 거부상태이면
+            if(chk== PackageManager.PERMISSION_DENIED){
+                // 사용자에게 권한 요창 창을 생성
+                requestPermissions(permission_list,0);
+            }
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        customProgressDialog.dismiss();
     }
 }
