@@ -1,8 +1,10 @@
 package com.example.capston;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 
 
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -27,12 +29,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -43,14 +50,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     String TAG = "db";
     private Uri filePath;
+    //프래그먼트의프로필 이미지위한 bitmap
+    Bitmap bitmap;
+
 
     Toolbar toolbar;
+    ActionBar actionBar;
+    TextView toolbar_TextView;
     BottomNavigationView bottomNavigationView;
     NavigationView navigationView;
     DrawerLayout drawerLayout;
 
 
-    // FrameLayout에 각 메뉴의 Fragment를 바꿔 줌
+    // FrameLayout에 각 메뉴의 Fragment를 추가,제거,삭제 해줌
+    // 액티비티에서 프래그먼트의 교체와 제거를 허용하는 경우, 액티비티의 onCreate() 메서드 동안 초기 프래그먼트를 액티비티에 추가해야 합니다.
     FragmentManager fragmentManager = getSupportFragmentManager();
     // 4개의 메뉴에 들어갈 Fragment
     HomeFragment homeFragment = new HomeFragment();
@@ -64,16 +77,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private FirebaseAuth mAuth;
     // firebase storage
     private FirebaseStorage firebaseStorage;
-
+    // 프로필참조.
+    TextView navigationViewHeader_profile_nickname;
+    TextView navigationViewHeader_profile_email;
+    ImageView navigationViewHeader_profile_Image;
+    StorageReference storageImageRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        // mainActivity 참조하는 view
         bottomNavigationView = findViewById(R.id.bottom_navigation_view);
         toolbar = (Toolbar) findViewById(R.id.app_toolbar);
+        toolbar_TextView = (TextView) findViewById(R.id.toolbar_title);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         navigationView = (NavigationView) findViewById(R.id.navigationView);
 
@@ -85,8 +103,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         //툴바를 앱바로 지정한다.
         setSupportActionBar(toolbar);
+        actionBar = getSupportActionBar();
         //툴바를 ActionBar 타입으로 받아와서 툴바 끝에 navigation
-        ActionBar actionBar = getSupportActionBar();
         actionBar.setHomeAsUpIndicator(R.drawable.round_menu_white_24);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
@@ -99,15 +117,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // navigation header xml 가져오기
         View navigationViewHeaderView = navigationView.getHeaderView(0);
         //header에서 프로필 사진뷰 가져오기
-        ImageView navigationViewHeader_profile_Image = (ImageView) navigationViewHeaderView.findViewById(R.id.navigation_header_profile_ImageView);
+        navigationViewHeader_profile_Image = (ImageView) navigationViewHeaderView.findViewById(R.id.navigation_header_profile_ImageView);
         navigationViewHeader_profile_Image.setOnClickListener(this);
 
         //header에서 프로필 변경뷰 가져오기
         ImageView navigationViewHeader_changeprofile_Image = (ImageView) navigationViewHeaderView.findViewById(R.id.navigation_header_changeprofileImg_ImageView);
         navigationViewHeader_changeprofile_Image.setOnClickListener(this);
         //header에서 프로필 이메일 및 Nickname testview 가져오기
-        TextView navigationViewHeader_profile_email = navigationViewHeaderView.findViewById(R.id.navigation_header_email_TextView);
-        TextView navigationViewHeader_profile_nickname = navigationViewHeaderView.findViewById(R.id.navigation_header_nickname_TextView);
+        navigationViewHeader_profile_email = navigationViewHeaderView.findViewById(R.id.navigation_header_email_TextView);
+        navigationViewHeader_profile_nickname = navigationViewHeaderView.findViewById(R.id.navigation_header_nickname_TextView);
 
 
 
@@ -120,14 +138,48 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             final Uri photoUrl = user.getPhotoUrl();
             navigationViewHeader_profile_email.setText(userEmail);
 
-            StorageReference storageRef = firebaseStorage.getReferenceFromUrl("gs://capston-77d38.appspot.com/").child("images/"+userEmail+".png");
+            firestore.collection("user").document(userEmail)
+                    .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    String userNickName = (String) documentSnapshot.getData().get("userNickName");
+                    navigationViewHeader_profile_nickname.setText(userNickName);
+
+                }
+            });
+
+
+            storageImageRef = firebaseStorage.getReferenceFromUrl("gs://capston-77d38.appspot.com/").child("images/" + userEmail + ".png");
+            storageImageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    Glide.with(getApplicationContext()).asBitmap().load(uri.toString())
+                            .into(new SimpleTarget<Bitmap>() {
+                                @Override
+                                public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
+                                    navigationViewHeader_profile_Image.setImageBitmap(resource);
+                                    bitmap=resource;
+                                    //할일
+                                }
+                            });
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Handle any errors
+                }
+            });
+        }
+        // 바로 캐싱 없이 구글 Storage에서 가져오기. 일단 보류.
+            /*
             GlideApp.with(this)
-                    .load(storageRef)
+                    .load(storageImageRef)
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .skipMemoryCache(true)
                     .into(navigationViewHeader_profile_Image);
+            */
 
-        }
+
         // bottomNavigationView의 아이템이 선택될 때 호출될 리스너 등록
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -136,20 +188,32 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 //bottmNavigationView들.
                 switch (item.getItemId()) {
                     case R.id.navigation_menu1: {
-
+                        //프레그먼트 교체
                         transaction.replace(R.id.frame_layout, homeFragment).commitAllowingStateLoss();
+                        //프레그먼트에 맞는 툴바 출력.
+                        toolbar_TextView.setText("홈");
+
                         break;
                     }
                     case R.id.navigation_menu2: {
+                        //프레그먼트 교체
                         transaction.replace(R.id.frame_layout, searchFragment).commitAllowingStateLoss();
+                        //프레그먼트에 맞는 툴바 출력.
+                        toolbar_TextView.setText("검색");
                         break;
                     }
                     case R.id.navigation_menu3: {
+                        //프레그먼트 교체
                         transaction.replace(R.id.frame_layout, myBookFragment).commitAllowingStateLoss();
+                        //프레그먼트에 맞는 툴바 출력.
+                        toolbar_TextView.setText("MyBook");
                         break;
                     }
                     case R.id.navigation_menu4: {
+                        //프레그먼트 교체
                         transaction.replace(R.id.frame_layout, workplaceFragment).commitAllowingStateLoss();
+                        //프레그먼트에 맞는 툴바 출력.
+                        toolbar_TextView.setText("내 작업실");
                         break;
                     }
                 }
@@ -224,19 +288,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         View navigationViewHeaderView = navigationView.getHeaderView(0);
-        ImageView navigationViewHeader_profile_Image = (ImageView) navigationViewHeaderView.findViewById(R.id.navigation_header_profile_ImageView);
+        final ImageView navigationViewHeader_profile_Image = (ImageView) navigationViewHeaderView.findViewById(R.id.navigation_header_profile_ImageView);
+
             //request코드가 0이고 OK를 선택했고 data에 뭔가가 들어 있다면 이미지뷰에 셋팅.
             if (requestCode == 0 && resultCode == RESULT_OK) {
                 filePath = data.getData();
                 Log.d(TAG, "uri:" + String.valueOf(filePath));
+                /*
                     //Uri 파일을 Bitmap으로 만들어서 ImageView에 집어 넣는다.
                     GlideApp.with(this)
                             .load(filePath)
                             .into(navigationViewHeader_profile_Image);
-
+                */
+                Glide.with(getApplicationContext()).asBitmap().load(filePath)
+                        .into(new SimpleTarget<Bitmap>() {
+                            @Override
+                            public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
+                                navigationViewHeader_profile_Image.setImageBitmap(resource);
+                                bitmap=resource;
+                                //할일
+                            }
+                        });
             }
-            //프로필 서버 이미지에 저장
-
+            //프로필을 서버 이미지에 저장
             if (filePath != null) {
                 // 파일이름을 유저의 ID로 지정.
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -262,6 +336,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
             filePath = null;
     }
+
 
     // 메인의 기본 버튼의 리스너설정.
     @Override

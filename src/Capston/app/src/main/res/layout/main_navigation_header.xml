@@ -7,21 +7,20 @@
     android:background="@color/colorOrange2"
     android:orientation="vertical"
     android:gravity="center">
-
-
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
         android:gravity="center">
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/navigation_header_profile_ImageView"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_centerInParent="true"
-            android:scaleType="centerInside"
-            android:src="@mipmap/ic_launcher" />
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:src="@mipmap/ic_launcher"
+            app:civ_border_width="1dp"
+            app:civ_border_color="#FF000000"/>
 
         <ImageView
             android:id="@+id/navigation_header_changeprofileImg_ImageView"
@@ -35,16 +34,6 @@
             android:layout_marginBottom="0dp"
             android:src="@android:drawable/ic_menu_camera" />
     </RelativeLayout>
-
-    <TextView
-        android:id="@+id/navigation_header_email_TextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="hik@test.com"
-
-        android:textSize="16sp"
-        android:textColor="#000000"/>
     <TextView
 
         android:id="@+id/navigation_header_nickname_TextView"
@@ -54,7 +43,17 @@
 
         android:layout_marginBottom="8dp"
         android:text="nickname"
-        android:textSize="10sp"
+        android:textSize="16sp"
         android:textColor="#000000"/>
+
+    <TextView
+        android:id="@+id/navigation_header_email_TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="hik@test.com"
+        android:textSize="20sp"
+        android:textColor="#000000"/>
+
 
 </LinearLayout>

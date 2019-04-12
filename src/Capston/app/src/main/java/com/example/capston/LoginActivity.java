@@ -78,7 +78,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 startActivity(intent);
                 break;
             case R.id.login_signin_button:
-
                 String userEmail = emailEditText.getText().toString();
                 String userPW = pwEditText.getText().toString();
 

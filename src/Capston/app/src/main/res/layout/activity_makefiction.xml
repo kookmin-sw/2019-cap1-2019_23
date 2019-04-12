@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MakeFictionActivity">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:gravity="center"
+        android:text="BookCover"
+        android:textSize="30dp"
+        android:textColor="#FF9800"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="50dp"
+        android:gravity="center_horizontal">
+
+        <ImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/makefiction_fictioncover_ImageView"
+            android:layout_width="150dp"
+            android:layout_height="220dp"
+            android:scaleType="fitXY"
+            android:src="@mipmap/ic_launcher" />
+
+        <ImageView
+            android:id="@+id/makefiction_fictioncoverselect_ImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/makefiction_fictioncover_ImageView"
+            android:layout_alignRight="@+id/makefiction_fictioncover_ImageView"
+            android:layout_alignBottom="@+id/makefiction_fictioncover_ImageView"
+            android:layout_marginEnd="0dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginBottom="0dp"
+            android:src="@android:drawable/ic_menu_camera" />
+    </RelativeLayout>
+
+    <EditText
+        android:id="@+id/makefiction_title_edittext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:maxLines="1"
+        android:hint="소설의 제목을 적으세요."
+       />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="8dp">
+        <EditText
+            android:id="@+id/makefiction_category_edittext"
+            android:layout_width="0dp"
+            android:layout_weight="6"
+            android:layout_height="wrap_content"
+            android:focusable="false"
+            android:maxLines="1"
+            android:hint="소설의 장르를 선택하세요."/>
+
+        <Button
+            android:id="@+id/makefiction_categoryselect_button"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+
+            android:background="@drawable/ic_local_hospital_black_24dp"/>
+    </LinearLayout>
+
+
+
+    <Button
+        android:id="@+id/makefiction_makefiction_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/buttonbackground"
+        android:textColor="#FFFFFF"
+        android:textSize="30sp"
+        android:text="소설 만들기"/>
+
+
+</LinearLayout>

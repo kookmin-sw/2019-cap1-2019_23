@@ -14,6 +14,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
@@ -43,13 +44,14 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         findViewById(R.id.signup_complete_button).setOnClickListener(this);
     }
 
-      @Override
+    @Override
     public void onClick(View v) {
         if(pwEditText.getText().toString().equals( confirmPwEditText.getText().toString() )) {
 
             final String userEmail= emailEditText.getText().toString();
             final String userNickName = nicknameEditText.getText().toString();
             final String userPW = pwEditText.getText().toString();
+
             mAuth.createUserWithEmailAndPassword(userEmail, userPW)
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                         @Override
@@ -58,17 +60,16 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                                 // Sign in success, update UI with the signed-in user's information
                                 FirebaseUser user = mAuth.getCurrentUser();
 
-                                userUniqueNumber = firestore.collection("user").document().getId();
+
                                 Map<String, Object> data = new HashMap<>();
-                                data.put("userUniqueNumber",userUniqueNumber);
                                 data.put("userEmail", userEmail);
                                 data.put("userNickName", userNickName);
                                 data.put("userPW", userPW);
-                                firestore.collection("user").document(userUniqueNumber).set(data);
+                                data.put("idCreationdate", FieldValue.serverTimestamp());
 
+                                firestore.collection("user").document(userEmail).set(data);
                                 Toast.makeText(SignUpActivity.this,"회원가입이 완료되었습니다.",Toast.LENGTH_SHORT).show();
                                 finish();
-
                             } else {
                                 // If sign in fails, display a message to the user.
                                 Toast.makeText(SignUpActivity.this, "Authentication failed.",
