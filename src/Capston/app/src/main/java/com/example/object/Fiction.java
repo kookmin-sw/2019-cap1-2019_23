@@ -7,6 +7,7 @@ public class Fiction {
     private String fictionCategory;
     private String fictionCreationdate;
     private String fictionImgCoverPath;
+    private int fictionLikeCount;
 
 
     //빈생성자.
@@ -14,12 +15,13 @@ public class Fiction {
     }
     //풀로찬 생성자.
 
-    public Fiction(String author, String fictionTitle, String fictionCategory, String fictionCreationdate, String fictionImgCoverPath) {
-        this.author = author;
+    public Fiction(String author, String fictionTitle, String fictionCategory, String fictionCreationdate, String fictionImgCoverPath,int fictionLikeCount)
+    {   this.author = author;
         this.fictionTitle = fictionTitle;
         this.fictionCategory = fictionCategory;
         this.fictionCreationdate = fictionCreationdate;
         this.fictionImgCoverPath = fictionImgCoverPath;
+        this.fictionLikeCount = fictionLikeCount;
     }
 
     public String getAuthor() {
@@ -62,6 +64,14 @@ public class Fiction {
         this.fictionImgCoverPath = fictionImgCoverPath;
     }
 
+    public int getFictionLikeCount() {
+        return fictionLikeCount;
+    }
+
+    public void setFictionLikeCount(int fictionLikeCount) {
+        this.fictionLikeCount = fictionLikeCount;
+    }
+
     @Override
     public String toString() {
         return "Fiction{" +
@@ -70,6 +80,7 @@ public class Fiction {
                 ", fictionCategory='" + fictionCategory + '\'' +
                 ", fictionCreationdate='" + fictionCreationdate + '\'' +
                 ", fictionImgCoverPath='" + fictionImgCoverPath + '\'' +
+                ", fictionLikeCount=" + fictionLikeCount +
                 '}';
     }
 }

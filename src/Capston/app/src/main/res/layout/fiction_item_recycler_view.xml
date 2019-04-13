@@ -18,6 +18,7 @@
         android:orientation="horizontal">
 
         <ImageView
+            android:id="@+id/item_fictioncover_imageview"
             android:layout_width="80dp"
             android:layout_height="100dp"
             android:scaleType="fitXY"
@@ -27,46 +28,74 @@
             android:layout_width="0dp"
             android:layout_height="100dp"
             android:layout_weight="1"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
+
             <TextView
-                android:id="@+id/item_booktitle_textview"
+                android:id="@+id/item_fictiontitle_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="4dp"
-                android:layout_marginLeft="8dp"
                 android:text="Title"
-                android:textStyle="bold"
-                android:textSize="24dp"
-                android:textColor="@android:color/black"/>
-            <TextView
-                android:id="@+id/item_bookcategory_textview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:text="코미디"
                 android:textColor="@android:color/black"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                tools:ignore="HardcodedText"/>
+                android:textSize="24dp"
+                android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/item_fictionCreationdate_textview"
+                android:id="@+id/item_fictioncategory_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:text="연재 시작일."
+                android:layout_marginLeft="8dp"
+                android:text="장르"
                 android:textColor="@android:color/black"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                tools:ignore="HardcodedText"/>
+                tools:ignore="HardcodedText" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/item_fictionLike_imageview"
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:src="@drawable/likeimg" />
+
+                <TextView
+                    android:id="@+id/item_fictionLikeCount_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="0"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/item_fictioncreationdate_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="100dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="4dp"
+                    android:text="연재 시작일"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    tools:ignore="HardcodedText" />
+            </LinearLayout>
         </LinearLayout>
 
-    <ImageView
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_gravity="right|center_vertical"
-        android:src="@drawable/ic_mode_edit_black_24dp" />
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="right|center_vertical"
+            android:src="@drawable/ic_mode_edit_black_24dp" />
+
+
+
     </LinearLayout>
 </android.support.v7.widget.CardView>

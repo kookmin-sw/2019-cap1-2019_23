@@ -72,11 +72,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     WorkplaceFragment workplaceFragment = new WorkplaceFragment();
 
     // firebase database
-    private FirebaseFirestore firestore;
+    static FirebaseFirestore firestore;
     // 파이어베이스 인증 객체 생성
-    private FirebaseAuth mAuth;
+    static FirebaseAuth mAuth;
     // firebase storage
-    private FirebaseStorage firebaseStorage;
+    static FirebaseStorage firebaseStorage;
     // 프로필참조.
     TextView navigationViewHeader_profile_nickname;
     TextView navigationViewHeader_profile_email;

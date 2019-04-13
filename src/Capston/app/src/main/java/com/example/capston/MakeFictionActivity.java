@@ -17,11 +17,13 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -46,9 +48,8 @@ public class MakeFictionActivity extends AppCompatActivity implements View.OnCli
     private FirebaseAuth mAuth;
     // firebase storage
     private FirebaseStorage firebaseStorage;
-
-
-
+    private String userNickName;
+    FirebaseUser user ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +70,14 @@ public class MakeFictionActivity extends AppCompatActivity implements View.OnCli
         mAuth = FirebaseAuth.getInstance();
         firebaseStorage = FirebaseStorage.getInstance();
         firestore =  FirebaseFirestore.getInstance();
+        user=mAuth.getCurrentUser();
+        firestore.collection("user").document(user.getEmail())
+                .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                userNickName = (String) documentSnapshot.getData().get("userNickName");
+            }
+        });
 
     }
     @Override
@@ -100,7 +109,7 @@ public class MakeFictionActivity extends AppCompatActivity implements View.OnCli
                 break;
             case R.id.makefiction_makefiction_button:
                 // 현재 로그인된 사용자의 정보를 받아온다.
-                FirebaseUser user = mAuth.getCurrentUser();
+
 
 
                 if(fictionTitle.getText().toString().isEmpty() || fictionCategory.getText().toString().isEmpty()){
@@ -133,17 +142,21 @@ public class MakeFictionActivity extends AppCompatActivity implements View.OnCli
 
                     // 데이터 베이스 하위 collection(Table)생성 및 저장.
                     Map<String, Object> data = new HashMap<>();
-                    // 제목,카테고리,저자,경로,생성일.
+                    //저자, 제목,카테고리,경로,생성일,좋아요..
+                    data.put("author",userNickName);
                     data.put("fictionTitle", fictionTitle.getText().toString());
                     data.put("fictionCategory", fictionCategory.getText().toString());
-                    data.put("author",user.getEmail());
                     data.put("fictionCreationdate", FieldValue.serverTimestamp());
                     data.put("fictionImgCoverPath","gs://capston-77d38.appspot.com/images/"+folderName+"/"+fileName);
-
+                    data.put("fictionLikeCount","0");
+                    // 개인 문서 workspace
                     firestore.collection("user").document(user.getEmail())
-                             .collection("workspace").document(fictionTitle.getText().toString()).set(data);
+                             .collection("myworkspace").document(fictionTitle.getText().toString()).set(data);
+                    // 전체 workspace
 
+                    firestore.collection("workspace").document(user.getEmail()+"_"+fictionTitle.getText().toString()).set(data);
                     //Toast.makeText(MakeFictionActivity.this,"데이터베이스 업데이트 완료.",Toast.LENGTH_SHORT).show();
+
                     finish();
                 }else{
                     Toast.makeText(MakeFictionActivity.this, "표지가 없는 소설은 생성할수 없습니다.", Toast.LENGTH_SHORT).show();
@@ -163,13 +176,11 @@ public class MakeFictionActivity extends AppCompatActivity implements View.OnCli
             filePath = data.getData();
             Log.d(TAG, "uri:" + String.valueOf(filePath));
             //Uri 파일을 Bitmap으로 만들어서 ImageView에 집어 넣는다.
-            GlideApp.with(this)
+            Glide.with(this)
                     .load(filePath)
                     .into(fictionCover);
         }
     }
-
-
 
     // 팝업메뉴 리스터 클래스를 내부에 정의한다.
     class PopListener implements PopupMenu.OnMenuItemClickListener{
