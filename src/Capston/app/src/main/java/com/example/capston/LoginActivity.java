@@ -88,8 +88,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 else{
                     Log.d("test", userEmail);
                     Log.d("test", userPW);
-
-
                     customProgressDialog.show();
                     mAuth.signInWithEmailAndPassword(userEmail, userPW)
                             .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
