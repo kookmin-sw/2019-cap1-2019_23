@@ -8,22 +8,23 @@ public class Fiction {
     private String fictionCreationdate;
     private String fictionImgCoverPath;
     private String fictionLikeCount;
+    private String fictionLastChapter;
 
 
     //빈생성자.
     public Fiction() {
     }
     //풀로찬 생성자.
-
-    public Fiction(String author, String fictionTitle, String fictionCategory, String fictionCreationdate, String fictionImgCoverPath,String fictionLikeCount)
+    public Fiction(String author, String fictionTitle, String fictionCategory,
+                   String fictionCreationdate, String fictionImgCoverPath,String fictionLikeCount,String fictionLastChapter)
     {   this.author = author;
         this.fictionTitle = fictionTitle;
         this.fictionCategory = fictionCategory;
         this.fictionCreationdate = fictionCreationdate;
         this.fictionImgCoverPath = fictionImgCoverPath;
         this.fictionLikeCount = fictionLikeCount;
+        this.fictionLastChapter =fictionLastChapter;
     }
-
     public String getAuthor() {
         return author;
     }
@@ -72,6 +73,15 @@ public class Fiction {
         this.fictionLikeCount = fictionLikeCount;
     }
 
+
+    public String getFictionLastChapter() {
+        return fictionLastChapter;
+    }
+
+    public void setFictionLastChapter(String fictionLastChapter) {
+        this.fictionLastChapter = fictionLastChapter;
+    }
+
     @Override
     public String toString() {
         return "Fiction{" +
@@ -80,7 +90,8 @@ public class Fiction {
                 ", fictionCategory='" + fictionCategory + '\'' +
                 ", fictionCreationdate='" + fictionCreationdate + '\'' +
                 ", fictionImgCoverPath='" + fictionImgCoverPath + '\'' +
-                ", fictionLikeCount=" + fictionLikeCount +
+                ", fictionLikeCount='" + fictionLikeCount + '\'' +
+                ", fictionLastChapter='" + fictionLastChapter + '\'' +
                 '}';
     }
 }

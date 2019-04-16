@@ -139,6 +139,7 @@ public class MakeFictionActivity extends AppCompatActivity implements View.OnCli
                                     data.put("fictionCreationdate", FieldValue.serverTimestamp());
                                     data.put("fictionImgCoverPath", "gs://capston-77d38.appspot.com/images/" + folderName + "/" + fileName);
                                     data.put("fictionLikeCount", "0");
+                                    data.put("fictionLastChater","0");
                                     // 데이터 베이스 하위 collection(Table)생성 및 저장.
                                     // 개인 문서 workspace
                                     firestore.collection("user").document(user.getEmail())

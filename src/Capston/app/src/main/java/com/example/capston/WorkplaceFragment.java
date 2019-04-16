@@ -116,10 +116,11 @@ public class WorkplaceFragment extends Fragment implements View.OnClickListener 
                                 String fictionCategory = (String) doc.getData().get("fictionCategory");
                                 String fictionImgCoverPath = (String) doc.getData().get("fictionImgCoverPath");
                                 String fictionLikeCount = (String)doc.getData().get("fictionLikeCount");
-
+                                String fictionLastChapter = (String)doc.getData().get("fictionLastChater") ;
                                 //fictionCreationdate 는 임시
                                 String fictionCreationdate = "2019-04-15";
-                                Fiction fiction = new Fiction(author, fictionTitle, fictionCategory, fictionCreationdate, fictionImgCoverPath, fictionLikeCount);
+                                Fiction fiction = new Fiction(author, fictionTitle, fictionCategory, fictionCreationdate,
+                                        fictionImgCoverPath, fictionLikeCount,fictionLastChapter);
                                 fictionList.add(fiction);
                                 Log.d(TAG,"여러번 호출.");
                             }

@@ -60,7 +60,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                                 // Sign in success, update UI with the signed-in user's information
                                 FirebaseUser user = mAuth.getCurrentUser();
 
-
                                 Map<String, Object> data = new HashMap<>();
                                 data.put("userEmail", userEmail);
                                 data.put("userNickName", userNickName);
