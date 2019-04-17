@@ -10,8 +10,6 @@
     app:cardPreventCornerOverlap="true"
     app:cardUseCompatPadding="true"
     app:cardElevation="2dp">
-
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -29,7 +27,6 @@
             android:layout_height="100dp"
             android:layout_weight="1"
             android:orientation="vertical">
-
             <TextView
                 android:id="@+id/item_fictiontitle_textview"
                 android:layout_width="wrap_content"
@@ -41,30 +38,45 @@
                 android:textColor="@android:color/black"
                 android:textSize="24dp"
                 android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/item_fictioncategory_textview"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:text="장르"
-                android:textColor="@android:color/black"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                tools:ignore="HardcodedText" />
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/item_fictioncategory_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:text="장르"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    tools:ignore="HardcodedText" />
+                <TextView
+                    android:id="@+id/item_fictionclastchater_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="22dp"
+                    android:text="최근 연재: "
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    tools:ignore="HardcodedText" />
+
+
+            </LinearLayout>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
-
                 <ImageView
                     android:id="@+id/item_fictionLike_imageview"
                     android:layout_width="30dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
                     android:src="@drawable/likeimg" />
-
                 <TextView
                     android:id="@+id/item_fictionLikeCount_textview"
                     android:layout_width="wrap_content"
@@ -72,13 +84,12 @@
                     android:layout_marginTop="8dp"
                     android:text="0"
                     android:textSize="16sp" />
-
                 <TextView
                     android:id="@+id/item_fictioncreationdate_textview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="100dp"
+                    android:layout_marginLeft="16dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="4dp"
                     android:text="연재 시작일"
@@ -88,14 +99,11 @@
                     tools:ignore="HardcodedText" />
             </LinearLayout>
         </LinearLayout>
-
         <ImageView
+            android:id="@+id/item_fictionwrite_imageView"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_gravity="right|center_vertical"
-            android:src="@drawable/ic_mode_edit_black_24dp" />
-
-
-
+            android:src="@drawable/cutomprogressdialog_edit_icon" />
     </LinearLayout>
 </android.support.v7.widget.CardView>

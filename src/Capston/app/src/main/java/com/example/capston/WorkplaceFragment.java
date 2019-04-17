@@ -1,6 +1,7 @@
 package com.example.capston;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.object.Fiction;
 import com.example.object.FictionAdapter;
@@ -23,6 +25,8 @@ import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -30,6 +34,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.ServerTimestamp;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -50,81 +55,82 @@ public class WorkplaceFragment extends Fragment implements View.OnClickListener 
 
     TextView fragment_workspace_nickname_TextView;
     CircleImageView fragment_workspace_user_CircleImageView;
-
-
     RecyclerView fictionRecyclerView;
+    String TAG = "realtime";
+    String userEmail;
     private List<Fiction> fictionList;
-    private FictionAdapter adapter;
+    private FictionAdapter recyclerViewAdapter;
+
 
     public WorkplaceFragment() {
         // Required empty public constructor
     }
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view =inflater.inflate(R.layout.fragment_workplace, container, false);
-        MainActivity mainActivity =(MainActivity)getActivity();
+
         floatingActionButton = (FloatingActionButton) view.findViewById(R.id.main_writeButton);
         floatingActionButton.setOnClickListener(this);
 
-
         fragment_workspace_user_CircleImageView = (CircleImageView) view.findViewById(R.id.fragment_workspace_profile_ImageView);
-        fragment_workspace_user_CircleImageView.setImageBitmap(mainActivity.bitmap);
-
         fragment_workspace_nickname_TextView= (TextView) view.findViewById(R.id.fragment_workspace_nickname_TextView);
-        String userNicName = mainActivity.navigationViewHeader_profile_nickname.getText().toString();
-        fragment_workspace_nickname_TextView.setText(userNicName);
+        //서버 연동(메인엑티비티에서 가져온다.)
+        MainActivity mainActivity = (MainActivity) getActivity();
+        //현재유저
+        FirebaseUser user = mainActivity.mAuth.getCurrentUser();
+        userEmail = user.getEmail();
+        // 프로필 사진.
+        StorageReference storageImageRef =mainActivity.firebaseStorage.getReferenceFromUrl("gs://capston-77d38.appspot.com/").child("images/" + userEmail+ ".png");
+        GlideApp.with(this)
+                .load(storageImageRef)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
+                .override(100,100)
+                .into(fragment_workspace_user_CircleImageView);
+        final String userNickName = mainActivity.navigationViewHeader_profile_nickname.getText().toString();
+        fragment_workspace_nickname_TextView.setText(userNickName);
 
-        //RecyclerView 설정.
-        fictionRecyclerView =(RecyclerView) view.findViewById(R.id.fragment_workspace_fictionList_recyclerView);
+
+        /// RecyclerView
+        fictionRecyclerView =  view.findViewById(R.id.fragment_workspace_fictionList_recyclerView);
         fictionList = new ArrayList<Fiction>();
-        settingRecyclerView();
+
+        MainActivity.firestore.collection("user").document(userEmail)
+                .collection("myworkspace")
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value,
+                                        @Nullable FirebaseFirestoreException e) {
+                        if (e != null) {
+                            Log.w(TAG, "Listen failed.", e);
+                            return;
+                        }
+                        fictionList.clear();
+                        for (QueryDocumentSnapshot doc : value) {
+                            if (doc.get("author") != null) {
+
+                                String author = (String) doc.getData().get("author");
+                                String fictionTitle = (String) doc.getData().get("fictionTitle");
+                                String fictionCategory = (String) doc.getData().get("fictionCategory");
+                                String fictionImgCoverPath = (String) doc.getData().get("fictionImgCoverPath");
+                                String fictionLikeCount = (String)doc.getData().get("fictionLikeCount");
+                                String fictionLastChapter = (String)doc.getData().get("fictionLastChater") ;
+                                //fictionCreationdate 는 임시
+                                String fictionCreationdate = "2019-04-15";
+                                Fiction fiction = new Fiction(author, fictionTitle, fictionCategory, fictionCreationdate,
+                                        fictionImgCoverPath, fictionLikeCount,fictionLastChapter);
+                                fictionList.add(fiction);
+                                Log.d(TAG,"여러번 호출.");
+                            }
+                        }
+                        recyclerViewAdapter =  new FictionAdapter(fictionList,getContext());
+                        fictionRecyclerView.setAdapter(recyclerViewAdapter);
+                    }
+                });
 
         return view;
-    }
-
-
-    private void settingRecyclerView(){
-        FirebaseUser user = MainActivity.mAuth.getCurrentUser();
-
-        MainActivity.firestore.collection("user").document(user.getEmail())
-                .collection("myworkspace").addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-
-                for (DocumentChange qds: queryDocumentSnapshots.getDocumentChanges()){
-
-                    switch (qds.getType()){
-
-                        case ADDED:
-                            String author = (String)qds.getDocument().getData().get("author");
-                            String fictionTitle = (String)qds.getDocument().getData().get("fictionTitle");
-                            String fictionCategory = (String)qds.getDocument().getData().get("fictionCategory");
-                            Date date =(Date) qds.getDocument().getData().get("fictionCreationdate");
-
-                            SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd");
-                            String fictionCreationdate = "2019-04-15";
-
-                            String fictionImgCoverPath = (String)qds.getDocument().getData().get("fictionImgCoverPath");
-                            int fictionLikeCount = Integer.parseInt((String)qds.getDocument().getData().get("fictionLikeCount"));
-
-                            Fiction data = new Fiction(author,fictionTitle,fictionCategory,fictionCreationdate,fictionImgCoverPath,fictionLikeCount);
-                            fictionList.add(data);
-                            break;
-
-                    }
-
-
-
-                }
-                adapter = new FictionAdapter(fictionList);
-                fictionRecyclerView.setAdapter(adapter);
-            }
-        });
-
     }
 
 
@@ -133,4 +139,6 @@ public class WorkplaceFragment extends Fragment implements View.OnClickListener 
         Intent intent = new Intent(getContext(), MakeFictionActivity.class);
         startActivity(intent);
     }
+
+
 }
