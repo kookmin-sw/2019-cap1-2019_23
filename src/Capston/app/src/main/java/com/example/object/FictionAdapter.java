@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
-import com.example.capston.ChapterList;
+import com.example.capston.ChapterListActivity;
 import com.example.capston.GlideApp;
 import com.example.capston.R;
 import com.google.firebase.storage.FirebaseStorage;
@@ -108,7 +108,7 @@ public class FictionAdapter extends RecyclerView.Adapter<FictionAdapter.FictionV
            int id = v.getId();
            switch (id){
                case R.id.item_fictionwrite_imageView:
-                   Intent intent = new Intent(context, ChapterList.class);
+                   Intent intent = new Intent(context, ChapterListActivity.class);
                    intent.putExtra("fictionTitle",fictiontitleTextview.getText().toString());
                    context.startActivity(intent);
                 break;

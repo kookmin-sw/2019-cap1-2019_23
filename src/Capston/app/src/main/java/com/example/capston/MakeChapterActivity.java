@@ -38,7 +38,6 @@ public class MakeChapterActivity extends AppCompatActivity implements View.OnCli
     private EditText chaptertitle;
     private Button chapterClearButton;
     private Button chapterSaveButton;
-    private Button chapterPublishBubtton;
     private EditText chapterContents;
 
     String fictionTitle;
@@ -55,7 +54,6 @@ public class MakeChapterActivity extends AppCompatActivity implements View.OnCli
         chaptertitle =(EditText) findViewById(R.id.makechapteractivity_chaptertitle_edittext);
         chapterClearButton = (Button) findViewById(R.id.makechapteractivity_chapterclear_button);
         chapterSaveButton = (Button) findViewById(R.id.makechapteractivity_chaptersave_button);
-        chapterPublishBubtton = (Button) findViewById(R.id.makechapteractivity_chapterpublish_button);
         chapterContents = (EditText) findViewById(R.id.makechapteractivity_chaptercontents_editText);
 
         Intent intent = getIntent();
@@ -86,9 +84,6 @@ public class MakeChapterActivity extends AppCompatActivity implements View.OnCli
 
         chapterClearButton.setOnClickListener(this);
         chapterSaveButton.setOnClickListener(this);
-        chapterPublishBubtton.setOnClickListener(this);
-
-
 
     }
 
@@ -143,23 +138,7 @@ public class MakeChapterActivity extends AppCompatActivity implements View.OnCli
                         });
                 finish();
                 break;
-            case R.id.makechapteractivity_chapterpublish_button:
-                firestore.collection("user").document(userEmail)
-                        .collection("myworkspace").document(fictionTitle).update("fictionLastChater", currentChapter)
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                Log.d(TAG, "DocumentSnapshot successfully updated!");
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.w(TAG, "Error updating document", e);
-                            }
-                        });
 
-                break;
 
         }
 

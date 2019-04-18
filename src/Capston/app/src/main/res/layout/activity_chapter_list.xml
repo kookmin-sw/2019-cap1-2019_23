@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ChapterList">
+    tools:context=".ChapterListActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -70,18 +70,32 @@
                     android:textSize="15dp"/>
 
             </LinearLayout>
-
-            <Button
-                android:id="@+id/chapterlist_chapterwrite_buttion"
+            <LinearLayout
                 android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            <Button
+                android:id="@+id/chapterlist_fictionpublish_buttion"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:background="@drawable/buttonbackground2"
-                android:text="다음 chapter 작성하기."
+                android:background="@drawable/buttonbackground"
+                android:text="이 소설 연재하기"
                 android:textAllCaps="false"
                 android:textColor="#FFFFFF"
-                android:textSize="20dp" />
-
+                android:textSize="15dp" />
+                <Button
+                    android:id="@+id/chapterlist_chapterwrite_buttion"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_margin="8dp"
+                    android:background="@drawable/buttonbackground2"
+                    android:text="다음 chapter 작성"
+                    android:textAllCaps="false"
+                    android:textColor="#FFFFFF"
+                    android:textSize="15dp" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 
@@ -98,7 +112,9 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/chapterlist_recyclerview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+    >
 
     </android.support.v7.widget.RecyclerView>
 

@@ -14,8 +14,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MakeChapterActivity"></activity>
-        <activity android:name=".ChapterList" />
+        <activity android:name=".EditChapterActivity"></activity>
+        <activity android:name=".MakeChapterActivity" />
+        <activity android:name=".ChapterListActivity" />
         <activity android:name=".MakeFictionActivity" />
         <activity
             android:name=".Splash"
