@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/noticeboard"
+            android:icon="@drawable/googleg_standard_color_18"
+            android:title="공지사항"
+            />
+        <item
+            android:id="@+id/report"
+            android:icon="@drawable/fui_ic_phone_white_24dp"
+            android:title="신고"
+            />
+        <item
+            android:id="@+id/logout"
+            android:icon="@drawable/common_full_open_on_phone"
+            android:title="로그아웃"
+            />
+    </group>
+</menu>
+
+

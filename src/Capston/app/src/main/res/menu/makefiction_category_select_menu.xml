@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <item
+        android:id="@+id/item1"
+        android:title="로맨스" />
+    <item
+        android:id="@+id/item2"
+        android:title="추리" />
+    <item
+        android:id="@+id/item3"
+        android:title="판타지" />
+    <item
+        android:id="@+id/item4"
+        android:title="호러" />
+    <item
+        android:id="@+id/item5"
+        android:title="SF" />
+    <item
+        android:id="@+id/item6"
+        android:title="무협" />
+    <item
+        android:id="@+id/item7"
+        android:title="기타" />
+</menu>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MakeChapterActivity"
+    android:background="@drawable/writebackground">
+    <EditText
+        android:id="@+id/editchapteractivity_chaptertitle_edittext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:hint="chapter의 제목을 넣어주세요."
+        android:padding="16dp"
+        android:textSize="20sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <Button
+            android:id="@+id/editchapteractivity_chapterclear_button"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:textColor="#ffffff"
+            android:background="@drawable/buttonbackground3"
+            android:text="전부삭제" />
+
+        <Button
+            android:id="@+id/editchapteractivity_chaptersave_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="8dp"
+            android:textColor="#ffffff"
+            android:background="@drawable/buttonbackground2"
+            android:text="저장" />
+        <Button
+            android:id="@+id/editchapteractivity_ttstemp_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="8dp"
+            android:textColor="#ffffff"
+            android:background="@drawable/buttonbackground"
+            android:text="읽어주기" />
+
+    </LinearLayout>
+    <EditText
+        android:id="@+id/editchapteractivity_chaptercontents_editText"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="8dp"
+        android:textSize="20sp"
+        android:gravity="start"
+        android:hint="여기서부터 작성하세요."
+        android:background="@null"
+        />
+</LinearLayout>

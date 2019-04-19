@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@color/colorOrange1"
+    tools:context=".SignUpActivity">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Sign Up"
+        android:textSize="60dp"
+        android:layout_marginBottom="40dp"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:layout_marginLeft="6dp"
+            android:text="Email: "/>
+
+        <EditText
+            android:id="@+id/signup_email_edit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:layout_margin="4dp"
+            android:hint="사용할 Email를 입력하세요"
+            android:maxLines="1"
+            tools:ignore="HardcodedText"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:layout_marginLeft="6dp"
+            android:text="Nick Name: "/>
+
+        <EditText
+            android:id="@+id/signup_nickname_edit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:layout_margin="4dp"
+            android:maxLines="1"
+            android:hint="필명(닉네임)"
+            tools:ignore="HardcodedText"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:layout_marginLeft="6dp"
+            android:text="Password: "/>
+
+        <EditText
+            android:id="@+id/signup_pw_edit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:layout_margin="4dp"
+            android:inputType="textPassword"
+            android:hint="비밀번호를 입력하세요"
+            android:maxLines="1"
+            tools:ignore="HardcodedText"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:layout_marginLeft="6dp"
+            android:text="Password confirm "/>
+        <EditText
+            android:id="@+id/signup_pwConfirm_edit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:layout_margin="4dp"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            android:hint="비밀번호를 다시 한번 입력하세요."
+            tools:ignore="HardcodedText"/>
+    </LinearLayout>
+    <Button
+        android:id="@+id/signup_complete_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:background="@drawable/buttonbackground"
+        android:text="완료"/>
+
+
+</LinearLayout>

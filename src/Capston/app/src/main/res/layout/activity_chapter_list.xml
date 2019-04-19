@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ChapterListActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="8dp">
+
+        <ImageView
+            android:id="@+id/chapterlist_fictioncover_imageview"
+            android:layout_width="130dp"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:src="@mipmap/ic_launcher" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/chapterlist_fictiontitle_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="제목"
+                android:textSize="30dp"
+                />
+            <TextView
+                android:id="@+id/chapterlist_category_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="장르"
+                android:layout_margin="8dp"
+                android:textSize="20dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp">
+                <ImageView
+                    android:id="@+id/chapterlist_likeimage"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/likeimg"/>
+                <TextView
+                    android:id="@+id/chapterlist_likecount_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:layout_marginLeft="8dp"
+                    android:text="0"
+                    android:textSize="15dp"
+                    />
+                <TextView
+                    android:id="@+id/chapterlist_fictioncreationdate_textview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="15dp"
+                    android:gravity="center_vertical"
+                    android:text="연재일"
+                    android:textSize="15dp"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            <Button
+                android:id="@+id/chapterlist_fictionpublish_buttion"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="@drawable/buttonbackground"
+                android:text="이 소설 연재하기"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF"
+                android:textSize="15dp" />
+                <Button
+                    android:id="@+id/chapterlist_chapterwrite_buttion"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_margin="8dp"
+                    android:background="@drawable/buttonbackground2"
+                    android:text="다음 chapter 작성"
+                    android:textAllCaps="false"
+                    android:textColor="#FFFFFF"
+                    android:textSize="15dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="charter 목록"
+        android:gravity="center"
+        android:background="@color/colorfictionList"
+        android:textColor="#ffffff"
+        android:textSize="20dp"
+
+        />
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/chapterlist_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+    >
+
+    </android.support.v7.widget.RecyclerView>
+
+
+</LinearLayout>

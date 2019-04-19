@@ -1,6 +1,6 @@
 ## I. 프로젝트 개요
-
-이 프로젝트는 시각 장애인들을 위한 Voice Book입니다. 시각장애인들은 책을 읽는 방법으로는 점자책과 독서 보조 기기를 사용해 읽을 수 있습니다. 하지만 점자책은 대다수의 시각장애인들에 점자 해독률이 낮기 때문에 읽기가 힘들다. 또한 점자책은 신간 책 같은 경우 점자책이 거의 없고, 기존 책들도 점자책 비율이 상당히 낮다. 독서 보조 기기는 가격적인 측면의 문제가 있고 다른사람의 도움 없이 시각장애인 혼자 독서 보조 기기를 사용하기 힘들다. 우리는 이러한 문제를 해결하고자 모든 조작을 음성으로 할 수 있도록 만들어 조작을 쉽게 했고, 시각장애인이 책을 듣는 지루함을 줄이기 위해 좋아하는 연예인의 목소리를 선택하여 책을 읽을 수 있는 기능을 탑재한 App 입니다.
+이 프로젝트는 소설을 좋아하는 사람을 위한 앱을 만드는 것이 목표입니다.
+일반인이 책으로 소설을 출간하는 하는 것은 쉽지 않습니다. 또한 출간되지 않는 책을 읽는 것 또한 불가능합니다. 우리가 만들 앱을 이용하면 누구든 자신의 소설을 타인에게 공개하고 소설에 대한 다른 사용자에 피드백을 받을 수 있습니다. 또한 스마트폰을 이용하여 이동 간 소설을 읽을 수 있는 오디오북 기능을 제공합니다. 이처럼 누구나 소설을 좋아하고 흥미가 있는 사람이면 자유롭게 자신의 작품(소설)을 타인과 공유하고 우리앱 에서 작가로 활동할 수 있습니다. 
 
 ## II. 팀 소개
 
@@ -40,7 +40,8 @@
 
 ## III. Abstract (영문 요약)
 
-This project is a voicebook reading for the visually impaired. Visually impaired people can read books using braille and reading aids. However, the Braille book is hard to read because the braille understanding rate is low for the majority of the visually impaired. In addition, Braille books have little braille books in the case of new books, and Braille books are fairly low in existing books. Reading aids are expensive, and it is difficult for blind people alone to use reading aids without the help of others. We have made it easy to manipulate all the operations by voice to solve these problems, and to read books by selecting the voice of a favorite entertainer in order to reduce the boredom of the visually impaired.
+The goal of this project is to create an app for people who love novels
+It is not easy for an ordinary person to publish novels. as a book. It is also impossible to read books that have not been published. With our apps, anyone can share their novels with others and get feedback from other users about the novel. It also provides an audiobook feature that allows you to read novels on the go using a smartphone. Anyone who likes and has interesting of a novels can freely share their works (novels) with others and act as writers in our app.
     
 ## IV. 소개 영상
 
