@@ -48,9 +48,9 @@
                 android:layout_marginRight="8dp">
                 <ImageView
                     android:id="@+id/chapterlist_likeimage"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@drawable/likeimg"/>
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/heart_bt_on"/>
                 <TextView
                     android:id="@+id/chapterlist_likecount_textview"
                     android:layout_width="wrap_content"

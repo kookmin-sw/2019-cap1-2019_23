@@ -99,10 +99,10 @@ public class MakeChapterActivity extends AppCompatActivity implements View.OnCli
         switch (id){
             case R.id.makechapteractivity_chapterclear_button:
                 chapterContents.setText("");
+
                 break;
+
             case R.id.makechapteractivity_chaptersave_button:
-
-
                 Map<String, Object> data = new HashMap<>();
                 data.put("fictionTitle",fictionTitle);
                 data.put("chapterNumber",currentChapter);

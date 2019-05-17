@@ -46,7 +46,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public void onClick(View v) {
-        if(pwEditText.getText().toString().equals( confirmPwEditText.getText().toString() )) {
+        if(pwEditText.getText().toString().equals(confirmPwEditText.getText().toString() )) {
 
             final String userEmail= emailEditText.getText().toString();
             final String userNickName = nicknameEditText.getText().toString();

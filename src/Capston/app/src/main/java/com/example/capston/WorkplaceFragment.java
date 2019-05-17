@@ -110,7 +110,6 @@ public class WorkplaceFragment extends Fragment implements View.OnClickListener 
                         fictionList.clear();
                         for (QueryDocumentSnapshot doc : value) {
                             if (doc.get("author") != null) {
-
                                 String author = (String) doc.getData().get("author");
                                 String fictionTitle = (String) doc.getData().get("fictionTitle");
                                 String fictionCategory = (String) doc.getData().get("fictionCategory");
