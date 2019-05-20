@@ -22,7 +22,9 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -67,19 +69,37 @@ public class SearchFragment extends Fragment {
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                 if (task.isSuccessful()) {
                                     for (QueryDocumentSnapshot document : task.getResult()) {
+                                        String authorAccount = (String) document.getData().get("userEmail");
                                         String author = (String) document.getData().get("author");
                                         String fictionTitle = (String) document.getData().get("fictionTitle");
-                                        String fictionCategory = (String) document.getData().get("ficationCategory");
-                                        String fictionLastChapter = (String) document.getData().get("fictionLastChapter");
+                                        String fictionCategory = (String) document.getData().get("fictionCategory");
+                                        String fictionLastChapter = (String) document.getData().get("fictionLastChater");
                                         String fictionImgCoverPath = (String) document.getData().get("fictionImgCoverPath");
+                                        Map<String,Object> fictionLikes = (HashMap<String,Object>) document.getData().get("likes");
+                                        Map<String,Object> fictionSubscribe = (HashMap<String,Object>) document.getData().get("bookmark");
 
-                                        PublishedFiction publishedFiction = new PublishedFiction(author, fictionTitle, fictionCategory, fictionImgCoverPath,
-                                                fictionLastChapter, "0", false, false);
+                                        boolean isUserLike= false;
+                                        boolean isSubscribe = false;
+
+                                        if(fictionLikes.containsKey(userEmail)){
+                                            isUserLike = true;
+                                        }else{
+                                            isUserLike = false;
+                                        }
+
+                                        if(fictionSubscribe.containsKey(userEmail)){
+                                            isSubscribe = true;
+                                        }else{
+                                            isSubscribe = false;
+                                        }
+
+                                        PublishedFiction publishedFiction = new PublishedFiction(authorAccount,author, fictionTitle, fictionCategory, fictionImgCoverPath,
+                                                fictionLastChapter, String.valueOf(fictionLikes.size()), isUserLike, isSubscribe);
+
                                         publishedFictionList.add(publishedFiction);
                                     }
 
                                 }else{
-
                                 }
                                 publishedFictionAdapter = new PublishedFictionAdapter(publishedFictionList,getContext());
                                 publishedFictionRecyclerView.setAdapter(publishedFictionAdapter);
@@ -87,10 +107,8 @@ public class SearchFragment extends Fragment {
                         });
                     }
                 }
-
             }
         });
-
         return view;
     }
 

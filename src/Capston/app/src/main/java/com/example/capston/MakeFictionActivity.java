@@ -133,21 +133,22 @@ public class MakeFictionActivity extends AppCompatActivity implements View.OnCli
                                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                                     //Toast.makeText(MakeFictionActivity.this, "표지 업로드 성공.", Toast.LENGTH_SHORT).show();
                                     //저자, 제목,카테고리,경로,생성일,좋아요..
+                                    data.put("userEmail",user.getEmail());
                                     data.put("author", userNickName);
                                     data.put("fictionTitle", fictionTitle.getText().toString());
                                     data.put("fictionCategory", fictionCategory.getText().toString());
                                     data.put("fictionCreationdate", FieldValue.serverTimestamp());
                                     data.put("fictionImgCoverPath", "gs://capston-77d38.appspot.com/images/" + folderName + "/" + fileName);
-                                    data.put("fictionLikeCount", "0");
                                     data.put("fictionLastChater","0");
                                     data.put("published",false);
+                                    // 맵추가
+                                    data.put("likes",new HashMap<String,Object>());
+                                    data.put("bookmark",new HashMap<String,Object>());
                                     // 데이터 베이스 하위 collection(Table)생성 및 저장.
                                     // 개인 문서 workspace
                                     firestore.collection("user").document(user.getEmail())
                                              .collection("myworkspace").document(fictionTitle.getText().toString())
                                              .set(data);
-
-
                                 }
                             });
                     filePath = null;

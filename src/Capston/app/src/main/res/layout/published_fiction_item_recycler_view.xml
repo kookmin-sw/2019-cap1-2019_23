@@ -35,6 +35,8 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
+                android:singleLine="true"
+                android:ellipsize="marquee"
                 android:text="Title"
                 android:textColor="@android:color/black"
                 android:textSize="20sp"
@@ -48,7 +50,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
-                    android:text="장르"
+                    android:text="장르: "
                     android:textColor="@android:color/black"
                     android:textSize="14sp"
                     android:textStyle="bold"
@@ -57,7 +59,7 @@
                     android:id="@+id/item_publishedfictionclastchater_textview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="22dp"
+                    android:layout_marginLeft="8dp"
                     android:text="최근 연재: "
                     android:textColor="@android:color/black"
                     android:textSize="14sp"
@@ -90,7 +92,7 @@
                 <TextView
                     android:id="@+id/item_publishedfictionAuthor_textview"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="16dp"
                     android:layout_marginTop="8dp"
@@ -102,11 +104,27 @@
                     tools:ignore="HardcodedText" />
             </LinearLayout>
         </LinearLayout>
-        <ImageView
-            android:id="@+id/item_publishedfictionwrite_imageView"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+
+        <ImageButton
+            android:id="@+id/item_publishedfictiondetail_imageView"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:layout_marginRight="8dp"
+            android:layout_marginLeft="8dp"
+            android:background="#F3BF25"
             android:layout_gravity="right|center_vertical"
+            android:src="@drawable/search"
+            android:scaleType="fitCenter"
+            />
+
+
+        <ImageView
+            android:id="@+id/item_publishedfictionbookmark_imageView"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:layout_marginRight="8dp"
+            android:layout_gravity="right|center_vertical"
+
             android:src="@drawable/star_bt" />
     </LinearLayout>
 </android.support.v7.widget.CardView>

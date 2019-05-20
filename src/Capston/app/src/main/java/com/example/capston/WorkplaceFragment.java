@@ -39,7 +39,9 @@ import com.google.firebase.storage.StorageReference;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Nullable;
 
@@ -114,7 +116,10 @@ public class WorkplaceFragment extends Fragment implements View.OnClickListener 
                                 String fictionTitle = (String) doc.getData().get("fictionTitle");
                                 String fictionCategory = (String) doc.getData().get("fictionCategory");
                                 String fictionImgCoverPath = (String) doc.getData().get("fictionImgCoverPath");
-                                String fictionLikeCount = (String) doc.getData().get("fictionLikeCount");
+
+                                Map<String,Object> fictionLikes = (HashMap<String,Object>) doc.getData().get("likes");
+
+
                                 String fictionLastChapter = (String) doc.getData().get("fictionLastChater");
                                 Date fictionCreationdateDateType  = (Date) doc.getData().get("fictionCreationdate");
 
@@ -123,15 +128,13 @@ public class WorkplaceFragment extends Fragment implements View.OnClickListener 
                                 String fictionCreationdateString;
                                 //Null Pointer 발생시 일시적으로 현재 시간을 넣는다.
                                 try {
-
                                   fictionCreationdateString = simpleDateFormat.format(fictionCreationdateDateType);
                                 }catch (Exception excetion){
                                     Date tempDate = new Date();
                                   fictionCreationdateString = simpleDateFormat.format(tempDate);
                                 }
-
                                 Fiction fiction = new Fiction(author, fictionTitle, fictionCategory, fictionCreationdateString,
-                                        fictionImgCoverPath, fictionLikeCount, fictionLastChapter+"장");
+                                        fictionImgCoverPath, String.valueOf(fictionLikes.size()), fictionLastChapter+"장");
                                 fictionList.add(fiction);
 
                             }

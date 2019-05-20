@@ -2,6 +2,7 @@ package com.example.object;
 
 public class PublishedFiction {
 
+    private  String authorAccount;
     private String author;
     private String fictionTitle;
     private String fictionCategory;
@@ -9,16 +10,30 @@ public class PublishedFiction {
     private String fictionImgCoverPath;
     private String fictionLastChapter;
 
-    private String fictionLikeCount;
-    private boolean isUserLike;
+    private String fictionLikeCount="0";
+    private boolean isUserLike=false;
+    private boolean isSubscribe=false;
 
-    private boolean isSubscribe;
 
 
-    public PublishedFiction() {
+
+    public void setAuthorAccount(String authorAccount) {
+        this.authorAccount = authorAccount;
     }
 
-    public PublishedFiction(String author, String fictionTitle, String fictionCategory,  String fictionImgCoverPath, String fictionLastChapter, String fictionLikeCount, boolean isUserLike, boolean isSubscribe) {
+
+    public PublishedFiction(String authorAccount, String author, String fictionTitle, String fictionCategory, String fictionImgCoverPath, String fictionLastChapter) {
+        this.authorAccount = authorAccount;
+        this.author = author;
+        this.fictionTitle = fictionTitle;
+        this.fictionCategory = fictionCategory;
+        this.fictionImgCoverPath = fictionImgCoverPath;
+        this.fictionLastChapter = fictionLastChapter;
+    }
+
+
+    public PublishedFiction(String authorAccount, String author, String fictionTitle, String fictionCategory, String fictionImgCoverPath, String fictionLastChapter, String fictionLikeCount, boolean isUserLike, boolean isSubscribe) {
+        this.authorAccount = authorAccount;
         this.author = author;
         this.fictionTitle = fictionTitle;
         this.fictionCategory = fictionCategory;
@@ -29,7 +44,12 @@ public class PublishedFiction {
         this.isSubscribe = isSubscribe;
     }
 
+    public PublishedFiction() {
+    }
 
+    public String getAuthorAccount() {
+        return authorAccount;
+    }
     public String getAuthor() {
         return author;
     }
