@@ -1,6 +1,6 @@
 package com.example.object;
 
-public class PublishedFiction {
+public class PublishedFiction implements Comparable<PublishedFiction> {
 
     private  String authorAccount;
     private String author;
@@ -20,8 +20,12 @@ public class PublishedFiction {
     public void setAuthorAccount(String authorAccount) {
         this.authorAccount = authorAccount;
     }
+    public PublishedFiction(String fictionImgCoverPath){
+        this.fictionImgCoverPath = fictionImgCoverPath;
+    }
 
-
+    public PublishedFiction() {
+    }
     public PublishedFiction(String authorAccount, String author, String fictionTitle, String fictionCategory, String fictionImgCoverPath, String fictionLastChapter) {
         this.authorAccount = authorAccount;
         this.author = author;
@@ -30,6 +34,7 @@ public class PublishedFiction {
         this.fictionImgCoverPath = fictionImgCoverPath;
         this.fictionLastChapter = fictionLastChapter;
     }
+
 
 
     public PublishedFiction(String authorAccount, String author, String fictionTitle, String fictionCategory, String fictionImgCoverPath, String fictionLastChapter, String fictionLikeCount, boolean isUserLike, boolean isSubscribe) {
@@ -44,8 +49,6 @@ public class PublishedFiction {
         this.isSubscribe = isSubscribe;
     }
 
-    public PublishedFiction() {
-    }
 
     public String getAuthorAccount() {
         return authorAccount;
@@ -113,4 +116,19 @@ public class PublishedFiction {
     public void setSubscribe(boolean subscribe) {
         isSubscribe = subscribe;
     }
+
+    @Override
+    public int compareTo(PublishedFiction o) {
+
+        if (Integer.parseInt(this.fictionLikeCount)< Integer.parseInt(o.getFictionLikeCount())) {
+            return 1;
+        } else if (Integer.parseInt(this.fictionLikeCount) >Integer.parseInt(o.getFictionLikeCount())) {
+            return -1;
+        }
+
+        return 0;
+    }
+
+
+
 }

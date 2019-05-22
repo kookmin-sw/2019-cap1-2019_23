@@ -95,8 +95,6 @@ public class EditChapterActivity extends AppCompatActivity implements View.OnCli
                 }
             }
         });
-
-
     }
     @Override
     public void onClick(View v) {
@@ -168,18 +166,13 @@ public class EditChapterActivity extends AppCompatActivity implements View.OnCli
         }
         Toast.makeText(this, "TTS 설정완료.", Toast.LENGTH_SHORT).show();
     }
+
     @Override
-
     protected void onDestroy() {
-
         if (tts != null) {
-
             tts.stop();
-
             tts.shutdown();
-
         }
-
         super.onDestroy();
 
     }

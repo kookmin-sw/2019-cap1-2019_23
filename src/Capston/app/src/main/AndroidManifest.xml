@@ -14,7 +14,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".EditChapterActivity"></activity>
+        <activity android:name=".ReadChapterActivity"></activity>
+        <activity android:name=".ReaderBookInfo" />
+        <activity android:name=".EditChapterActivity" />
         <activity android:name=".MakeChapterActivity" />
         <activity android:name=".ChapterListActivity" />
         <activity android:name=".MakeFictionActivity" />

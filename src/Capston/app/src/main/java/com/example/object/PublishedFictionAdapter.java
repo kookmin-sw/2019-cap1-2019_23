@@ -2,6 +2,7 @@ package com.example.object;
 
 import android.content.ClipData;
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -13,8 +14,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.example.capston.ChapterListActivity;
 import com.example.capston.GlideApp;
 import com.example.capston.R;
+import com.example.capston.ReaderBookInfo;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -31,6 +35,8 @@ import com.google.firebase.storage.StorageReference;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static android.support.v4.content.ContextCompat.startActivity;
 
 public class PublishedFictionAdapter extends RecyclerView.Adapter<PublishedFictionAdapter.PublishedFictionViewHolder> {
     // Adapter란 Data 관리를 도와주고 list(RecyclerView)의 갱신을 관리하는 역활을한다.
@@ -58,10 +64,10 @@ public class PublishedFictionAdapter extends RecyclerView.Adapter<PublishedFicti
         // List에서 하나씩 꺼내서 item의 각각의 view에 넣는다.
         PublishedFiction publishedFiction = publishedFictionList.get(i);
         // 바인딩.
-        publishedFictionViewHolder.publishedFictionAuthorTextView.append(publishedFiction.getAuthor());
+        publishedFictionViewHolder.publishedFictionAuthorTextView.setText("작가:"+publishedFiction.getAuthor());
         publishedFictionViewHolder.publishedFictionTitleTextView.setText(publishedFiction.getFictionTitle());
-        publishedFictionViewHolder.publishedFictionCategoeryTextView.append(publishedFiction.getFictionCategory());
-        publishedFictionViewHolder.publishedFictioncLastchaterTextView.append(publishedFiction.getFictionLastChapter()+"장");
+        publishedFictionViewHolder.publishedFictionCategoeryTextView.setText("장르:"+publishedFiction.getFictionCategory());
+        publishedFictionViewHolder.publishedFictioncLastchaterTextView.setText("연재:"+publishedFiction.getFictionLastChapter()+"장");
         publishedFictionViewHolder.publishedFicttionLikeCount.setText(publishedFiction.getFictionLikeCount());
 
         publishedFictionViewHolder.authorAccount =  publishedFiction.getAuthorAccount();
@@ -82,6 +88,8 @@ public class PublishedFictionAdapter extends RecyclerView.Adapter<PublishedFicti
             publishedFictionViewHolder.isUserBookMark= false;
         }
 
+        PublishedFictionViewHolder.publishedFictioncoverImageview.setImageDrawable(null);
+
         firebaseStorage = FirebaseStorage.getInstance();
         StorageReference storageRef = firebaseStorage.getReferenceFromUrl(publishedFiction.getFictionImgCoverPath());
         GlideApp.with(context)
@@ -94,11 +102,6 @@ public class PublishedFictionAdapter extends RecyclerView.Adapter<PublishedFicti
     public int getItemCount() {
         return publishedFictionList.size();
     }
-
-
-
-
-
 
     static class PublishedFictionViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView publishedFictionAuthorTextView;
@@ -148,10 +151,16 @@ public class PublishedFictionAdapter extends RecyclerView.Adapter<PublishedFicti
             final FirebaseUser user = mAuth.getCurrentUser();
             final DocumentReference fictionRef = firestore.collection("user").document(authorAccount).collection("myworkspace").document(publishedFictionTitleTextView.getText().toString());
 
-            Toast.makeText(context,authorAccount,Toast.LENGTH_LONG).show();
+            //Toast.makeText(context,authorAccount,Toast.LENGTH_LONG).show();
             switch (id){
                 case R.id.item_publishedfictiondetail_imageView:
                     // 책정보
+                    Intent intent = new Intent(context, ReaderBookInfo.class);
+                    intent.putExtra("fictionTitle",publishedFictionTitleTextView.getText().toString());
+                    intent.putExtra("fictionCategory",publishedFictionCategoeryTextView.getText().toString());
+                    intent.putExtra("authorAccount",authorAccount);
+                    context.startActivity(intent);
+
                     break;
                 case R.id.item_publishedfictionbookmark_imageView:
                     // 북마크
@@ -159,7 +168,7 @@ public class PublishedFictionAdapter extends RecyclerView.Adapter<PublishedFicti
                         @Override
                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                             if (task.isSuccessful()) {
-                                DocumentSnapshot document = task.getResult();
+                                final DocumentSnapshot document = task.getResult();
                                 if (document.exists()) {
                                     Map<String,Object> bookmark = (HashMap<String, Object>) document.getData().get("bookmark");
 
@@ -172,18 +181,15 @@ public class PublishedFictionAdapter extends RecyclerView.Adapter<PublishedFicti
                                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                     @Override
                                                     public void onSuccess(Void aVoid) {
-
                                                     }
                                                 })
                                                 .addOnFailureListener(new OnFailureListener() {
                                                     @Override
                                                     public void onFailure(@NonNull Exception e) {
-
                                                     }
                                                 });
-                                        firestore.collection("user").document(user.getEmail()).
-
-
+                                        firestore.collection("user").document(user.getEmail()).collection("mybookmark")
+                                                .document(authorAccount+"_"+publishedFictionTitleTextView.getText().toString()).delete();
                                     }else {
                                         // 새로 눌렀을때
                                         publishedFictionBookMark.setImageResource(R.drawable.star_bt_on);
@@ -203,6 +209,11 @@ public class PublishedFictionAdapter extends RecyclerView.Adapter<PublishedFicti
                                                     }
                                                 });
 
+                                        Map<String,Object> data = new HashMap<String, Object>();
+                                        data.put("authorAccount",authorAccount);
+                                        data.put("fictionTitle",publishedFictionTitleTextView.getText().toString());
+                                        firestore.collection("user").document(user.getEmail()).collection("mybookmark")
+                                                .document(authorAccount+"_"+publishedFictionTitleTextView.getText().toString()).set(data);
 
                                     }
                                 } else {

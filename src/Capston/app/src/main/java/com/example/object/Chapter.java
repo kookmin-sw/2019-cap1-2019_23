@@ -4,14 +4,26 @@ import java.util.Date;
 
 public class Chapter {
 
-        private String fictionTitle;
-        private String chapterNumber;
-        private String chapterTitle;
-        private String chapterContents;
-        private Date chapterFinalModifieddate;
+
+
+    private String authorAccount;
+    private String fictionTitle;
+    private String chapterNumber;
+    private String chapterTitle;
+    private String chapterContents;
+    private Date chapterFinalModifieddate;
 
     public Chapter() {
     }
+
+
+    public Chapter(String chapterNumber, String chapterTitle, String authorAccount,String fictionTitle) {
+        this.chapterNumber = chapterNumber;
+        this.chapterTitle = chapterTitle;
+        this.authorAccount = authorAccount;
+        this.fictionTitle = fictionTitle;
+    }
+
 
     public Chapter(String chapterNumber, String chapterTitle) {
         this.chapterNumber = chapterNumber;
@@ -26,6 +38,15 @@ public class Chapter {
         this.chapterTitle = chapterTitle;
         this.chapterContents = chapterContents;
         this.chapterFinalModifieddate = chapterFinalModifieddate;
+    }
+
+
+    public String getAuthorAccount() {
+        return authorAccount;
+    }
+
+    public void setAuthorAccount(String authorAccount) {
+        this.authorAccount = authorAccount;
     }
 
     public String getFictionTitle() {

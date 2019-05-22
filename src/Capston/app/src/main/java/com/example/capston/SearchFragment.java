@@ -32,14 +32,16 @@ import java.util.Map;
  */
 public class SearchFragment extends Fragment {
 
+    String userEmail;
     RecyclerView publishedFictionRecyclerView;
     PublishedFictionAdapter publishedFictionAdapter;
-    String userEmail;
 
     private List<PublishedFiction> publishedFictionList;
     public SearchFragment() {
         // Required empty public constructor
     }
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

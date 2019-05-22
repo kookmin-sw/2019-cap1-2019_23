@@ -71,7 +71,7 @@ public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.ChapterV
 
         public ChapterViewHolder(@NonNull View itemView) {
             super(itemView);
-            // item view => onCreateViewHolder 에서 넘겨준 뷰.
+            // itemview => onCreateViewHolder 에서 넘겨준 뷰.
             chapterNumberTextView = itemView.findViewById(R.id.item_chapternumber_textview);
             chapterTitleTextView = itemView.findViewById(R.id.item_chaptertitle_textview);
             chapterEditImagView = itemView.findViewById(R.id.item_chapteredit_Imageview);

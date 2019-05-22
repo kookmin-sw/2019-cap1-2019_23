@@ -21,10 +21,15 @@ import com.bumptech.glide.Glide;
 import com.example.capston.ChapterListActivity;
 import com.example.capston.GlideApp;
 import com.example.capston.R;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -65,7 +70,7 @@ public class FictionAdapter extends RecyclerView.Adapter<FictionAdapter.FictionV
         fictionViewHolder.fictioncategoryTextview.setText(fiction.getFictionCategory());
         fictionViewHolder.fictionLikeCountTextview.setText(String.valueOf(fiction.getFictionLikeCount()));
         fictionViewHolder.fictioncreationdateTextview.setText(fiction.getFictionCreationdate());
-        fictionViewHolder.fictionlastchapter.append(fiction.getFictionLastChapter());
+        fictionViewHolder.fictionlastchapter.setText("최근 연재:"+fiction.getFictionLastChapter()+"장");
 
         firebaseStorage = FirebaseStorage.getInstance();
         StorageReference storageRef = firebaseStorage.getReferenceFromUrl(fiction.getFictionImgCoverPath());
@@ -139,8 +144,6 @@ public class FictionAdapter extends RecyclerView.Adapter<FictionAdapter.FictionV
            }
 
         }
-
-
         @Override
         public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
             //구성된 메뉴객체(contextMenu), 설정된 뷰의 주소값(TextView),contextmenu 내부의 정보를 가지고 있는 객체
@@ -156,7 +159,7 @@ public class FictionAdapter extends RecyclerView.Adapter<FictionAdapter.FictionV
                     case R.id.item_fictioncontainer_cardview:
                         firestore=FirebaseFirestore.getInstance();
                         mAuth = FirebaseAuth.getInstance();
-                        String userEmail = mAuth.getCurrentUser().getEmail();
+                        final String userEmail = mAuth.getCurrentUser().getEmail();
                         firestore.collection("user").document(userEmail)
                                 .collection("myworkspace").document(fictiontitleTextview.getText().toString())
                                 .delete()
@@ -172,6 +175,18 @@ public class FictionAdapter extends RecyclerView.Adapter<FictionAdapter.FictionV
 
                                     }
                                 });
+                        // 모든 북마크를 지운다.
+                        firestore.collection("user").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        DocumentReference docUserRef =document.getReference();
+                                        docUserRef.collection("mybookmark").document(userEmail+"_"+fictiontitleTextview.getText().toString()).delete();
+                                    }
+                                }
+                            }
+                        });
                         break;
                 }
                 return false;

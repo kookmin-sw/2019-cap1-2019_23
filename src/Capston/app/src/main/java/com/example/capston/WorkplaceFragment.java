@@ -134,7 +134,7 @@ public class WorkplaceFragment extends Fragment implements View.OnClickListener 
                                   fictionCreationdateString = simpleDateFormat.format(tempDate);
                                 }
                                 Fiction fiction = new Fiction(author, fictionTitle, fictionCategory, fictionCreationdateString,
-                                        fictionImgCoverPath, String.valueOf(fictionLikes.size()), fictionLastChapter+"장");
+                                        fictionImgCoverPath, String.valueOf(fictionLikes.size()), fictionLastChapter);
                                 fictionList.add(fiction);
 
                             }
@@ -146,13 +146,9 @@ public class WorkplaceFragment extends Fragment implements View.OnClickListener 
 
         return view;
     }
-
-
     @Override
     public void onClick(View v) {
         Intent intent = new Intent(getContext(), MakeFictionActivity.class);
         startActivity(intent);
     }
-
-
 }
