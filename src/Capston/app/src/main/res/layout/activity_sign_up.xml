@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:gravity="center"
     android:background="@color/colorOrange1"
-    tools:context=".SignUpActivity">
+    tools:context="com.example.login.SignUpActivity">
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

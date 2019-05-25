@@ -1,21 +1,19 @@
 package com.example.object;
 
-import android.content.ClipData;
+
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+
 import android.view.LayoutInflater;
-import android.view.TextureView;
+
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.example.capston.ChapterListActivity;
 import com.example.capston.GlideApp;
 import com.example.capston.R;
 import com.example.capston.ReaderBookInfo;
@@ -36,7 +34,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static android.support.v4.content.ContextCompat.startActivity;
+
 
 public class PublishedFictionAdapter extends RecyclerView.Adapter<PublishedFictionAdapter.PublishedFictionViewHolder> {
     // Adapter란 Data 관리를 도와주고 list(RecyclerView)의 갱신을 관리하는 역활을한다.
@@ -119,10 +117,7 @@ public class PublishedFictionAdapter extends RecyclerView.Adapter<PublishedFicti
         private boolean isUserLike;
         private boolean isUserBookMark;
 
-
-
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-
 
         public PublishedFictionViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -149,7 +144,9 @@ public class PublishedFictionAdapter extends RecyclerView.Adapter<PublishedFicti
             firestore=FirebaseFirestore.getInstance();
             FirebaseAuth mAuth = FirebaseAuth.getInstance();
             final FirebaseUser user = mAuth.getCurrentUser();
-            final DocumentReference fictionRef = firestore.collection("user").document(authorAccount).collection("myworkspace").document(publishedFictionTitleTextView.getText().toString());
+            final DocumentReference authorAccountRef = firestore.collection("user").document(authorAccount);
+            final CollectionReference authorAccountMyworkspaceRef =  authorAccountRef.collection("myworkspace");
+            final DocumentReference fictionRef = authorAccountMyworkspaceRef.document(publishedFictionTitleTextView.getText().toString());
 
             //Toast.makeText(context,authorAccount,Toast.LENGTH_LONG).show();
             switch (id){
@@ -160,7 +157,6 @@ public class PublishedFictionAdapter extends RecyclerView.Adapter<PublishedFicti
                     intent.putExtra("fictionCategory",publishedFictionCategoeryTextView.getText().toString());
                     intent.putExtra("authorAccount",authorAccount);
                     context.startActivity(intent);
-
                     break;
                 case R.id.item_publishedfictionbookmark_imageView:
                     // 북마크
@@ -171,7 +167,6 @@ public class PublishedFictionAdapter extends RecyclerView.Adapter<PublishedFicti
                                 final DocumentSnapshot document = task.getResult();
                                 if (document.exists()) {
                                     Map<String,Object> bookmark = (HashMap<String, Object>) document.getData().get("bookmark");
-
                                     if(isUserBookMark){
                                         // 이미 눌렀으면 다시 눌르면 사진 변경및 숫자 낮추기.
                                         publishedFictionBookMark.setImageResource(R.drawable.star_bt);
@@ -188,8 +183,23 @@ public class PublishedFictionAdapter extends RecyclerView.Adapter<PublishedFicti
                                                     public void onFailure(@NonNull Exception e) {
                                                     }
                                                 });
+                                        // 자신이 북마크한 소설 정리.
                                         firestore.collection("user").document(user.getEmail()).collection("mybookmark")
                                                 .document(authorAccount+"_"+publishedFictionTitleTextView.getText().toString()).delete();
+                                        // 작가 인기 업데이트
+                                        authorAccountRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                if (task.isSuccessful()) {
+                                                    DocumentSnapshot document = task.getResult();
+                                                    if (document.exists()) {
+                                                        Long uesrPopularity =(Long) document.getData().get("uesrPopularity");
+                                                        authorAccountRef.update("uesrPopularity",uesrPopularity-1);
+                                                    }
+                                                }
+                                            }
+                                        });
+
                                     }else {
                                         // 새로 눌렀을때
                                         publishedFictionBookMark.setImageResource(R.drawable.star_bt_on);
@@ -208,18 +218,28 @@ public class PublishedFictionAdapter extends RecyclerView.Adapter<PublishedFicti
 
                                                     }
                                                 });
-
+                                        // 자신이 북마크한 소설 정리.
                                         Map<String,Object> data = new HashMap<String, Object>();
                                         data.put("authorAccount",authorAccount);
                                         data.put("fictionTitle",publishedFictionTitleTextView.getText().toString());
                                         firestore.collection("user").document(user.getEmail()).collection("mybookmark")
                                                 .document(authorAccount+"_"+publishedFictionTitleTextView.getText().toString()).set(data);
 
+                                        // 작가 인기 업데이트
+                                        authorAccountRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                if (task.isSuccessful()) {
+                                                    DocumentSnapshot document = task.getResult();
+                                                    if (document.exists()) {
+                                                        Long uesrPopularity =(Long) document.getData().get("uesrPopularity");
+                                                        authorAccountRef.update("uesrPopularity",uesrPopularity+1);
+                                                    }
+                                                }
+                                            }
+                                        });
                                     }
-                                } else {
-
                                 }
-                            } else {
                             }
                         }
                     });
@@ -233,7 +253,6 @@ public class PublishedFictionAdapter extends RecyclerView.Adapter<PublishedFicti
                                 DocumentSnapshot document = task.getResult();
                                 if (document.exists()) {
                                     Map<String,Object> likse = (HashMap<String, Object>) document.getData().get("likes");
-
                                     if(isUserLike){
                                         // 이미 눌렀으면 다시 눌르면 사진 변경및 숫자 낮추기.
                                         publishedfictionLikeImageview.setImageResource(R.drawable.heart_bt);
@@ -244,7 +263,6 @@ public class PublishedFictionAdapter extends RecyclerView.Adapter<PublishedFicti
                                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                     @Override
                                                     public void onSuccess(Void aVoid) {
-
                                                     }
                                                 })
                                                 .addOnFailureListener(new OnFailureListener() {
@@ -274,11 +292,7 @@ public class PublishedFictionAdapter extends RecyclerView.Adapter<PublishedFicti
                                                     }
                                                 });
                                     }
-                                } else {
-
                                 }
-                            } else {
-
                             }
                         }
                     });

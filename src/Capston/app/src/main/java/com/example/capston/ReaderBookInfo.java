@@ -95,7 +95,7 @@ public class ReaderBookInfo extends AppCompatActivity {
 
         firestore.collection("user").document(authorAccount)
                 .collection("myworkspace").document(fictionTitle)
-                .collection("chapters")  .get()
+                .collection("chapters").get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {

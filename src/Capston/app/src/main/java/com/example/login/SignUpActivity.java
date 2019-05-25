@@ -1,14 +1,13 @@
-package com.example.capston;
+package com.example.login;
 
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.android.gms.auth.api.Auth;
+import com.example.capston.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -64,6 +63,8 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                                 data.put("userEmail", userEmail);
                                 data.put("userNickName", userNickName);
                                 data.put("userPW", userPW);
+                                data.put("userProfileImgPath","gs://capston-77d38.appspot.com/images/" + userEmail + ".png" );
+                                data.put("uesrPopularity","0");
                                 data.put("idCreationdate", FieldValue.serverTimestamp());
 
                                 firestore.collection("user").document(userEmail).set(data);

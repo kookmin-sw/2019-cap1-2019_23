@@ -1,4 +1,4 @@
-package com.example.capston;
+package com.example.fragment;
 
 
 import android.os.Bundle;
@@ -8,8 +8,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
+import com.example.capston.R;
 import com.example.object.BookmarkFictionAdapter;
 import com.example.object.MyBookDecoration;
 import com.example.object.PublishedFiction;
@@ -22,7 +22,9 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -74,10 +76,31 @@ public class MyBookFragment extends Fragment {
                                     if (task.isSuccessful()) {
                                         DocumentSnapshot document = task.getResult();
                                         if (document.exists()) {
+                                            String authorAccount = (String) document.getData().get("userEmail");
+                                            String author = (String) document.getData().get("author");
+                                            String fictionTitle = (String) document.getData().get("fictionTitle");
+                                            String fictionCategory = (String) document.getData().get("fictionCategory");
+                                            String fictionLastChapter = (String) document.getData().get("fictionLastChater");
                                             String fictionImgCoverPath = (String) document.getData().get("fictionImgCoverPath");
+                                            Map<String,Object> fictionLikes = (HashMap<String,Object>) document.getData().get("likes");
+                                            Map<String,Object> fictionSubscribe = (HashMap<String,Object>) document.getData().get("bookmark");
+                                            boolean isUserLike= false;
+                                            boolean isSubscribe = false;
 
+                                            if(fictionLikes.containsKey(userEmail)){
+                                                isUserLike = true;
+                                            }else{
+                                                isUserLike = false;
+                                            }
+
+                                            if(fictionSubscribe.containsKey(userEmail)){
+                                                isSubscribe = true;
+                                            }else{
+                                                isSubscribe = false;
+                                            }
                                             //Toast.makeText(getContext(),fictionImgCoverPath, Toast.LENGTH_LONG).show();
-                                            PublishedFiction bookmarkFiction = new PublishedFiction(fictionImgCoverPath);
+                                            PublishedFiction bookmarkFiction =new PublishedFiction(authorAccount,author, fictionTitle, fictionCategory, fictionImgCoverPath,
+                                                    fictionLastChapter, String.valueOf(fictionLikes.size()), isUserLike, isSubscribe);
                                             bookmarkFictionList.add(bookmarkFiction);
                                             //Toast.makeText(getContext(),String.valueOf(bookmarkFictionList.size()), Toast.LENGTH_LONG).show();
                                             bookmarkFictionAdapter = new BookmarkFictionAdapter(bookmarkFictionList,getContext());
