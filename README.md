@@ -30,7 +30,7 @@
 
 - 학번 : 20133206
 - github : https://github.com/fatalyoungjun
-- email : dudwns6992@naver.com
+- email : rladudwns6992@gmail.com
 
 ##### 김태훈
 
