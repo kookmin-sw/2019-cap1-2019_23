@@ -8,7 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.object.Chapter;
@@ -45,7 +44,6 @@ public class ReadFictionActivity extends AppCompatActivity implements View.OnCli
     ImageView readfictionBookmarkImageview;
 
 
-
     String authorAccount;
     String author;
     String fictionTitle;
@@ -57,7 +55,6 @@ public class ReadFictionActivity extends AppCompatActivity implements View.OnCli
 
     FirebaseFirestore firestore = FirebaseFirestore.getInstance();
     FirebaseStorage firebaseStorage= FirebaseStorage.getInstance();
-
 
     RecyclerView chapterRecyclerView;
     ChapterAdapterReader chapterAdapterReader;
