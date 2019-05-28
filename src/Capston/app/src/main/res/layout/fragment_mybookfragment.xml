@@ -3,14 +3,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MyBookFragment">
+    android:background="@drawable/bookshelf"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.example.fragment.MyBookFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/fragment_mybookfragment_bookmarkfictionList_recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:textSize="50dp"
-        android:text="MyBook" />
-
+        app:layoutManager="android.support.v7.widget.GridLayoutManager"
+        android:layout_marginTop="18dp"
+        android:layout_marginLeft="10dp"
+        app:spanCount="4">
+    </android.support.v7.widget.RecyclerView>
 </LinearLayout>

@@ -1,10 +1,8 @@
-package com.example.capston;
+package com.example.fragment;
 
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
@@ -13,33 +11,26 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.example.capston.GlideApp;
+import com.example.capston.MakeFictionActivity;
+import com.example.capston.R;
 import com.example.object.Fiction;
 import com.example.object.FictionAdapter;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.Timestamp;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentChange;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.ServerTimestamp;
-import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Nullable;
 
@@ -110,12 +101,14 @@ public class WorkplaceFragment extends Fragment implements View.OnClickListener 
                         fictionList.clear();
                         for (QueryDocumentSnapshot doc : value) {
                             if (doc.get("author") != null) {
-
                                 String author = (String) doc.getData().get("author");
                                 String fictionTitle = (String) doc.getData().get("fictionTitle");
                                 String fictionCategory = (String) doc.getData().get("fictionCategory");
                                 String fictionImgCoverPath = (String) doc.getData().get("fictionImgCoverPath");
-                                String fictionLikeCount = (String) doc.getData().get("fictionLikeCount");
+
+                                Map<String,Object> fictionLikes = (HashMap<String,Object>) doc.getData().get("likes");
+
+
                                 String fictionLastChapter = (String) doc.getData().get("fictionLastChater");
                                 Date fictionCreationdateDateType  = (Date) doc.getData().get("fictionCreationdate");
 
@@ -124,15 +117,13 @@ public class WorkplaceFragment extends Fragment implements View.OnClickListener 
                                 String fictionCreationdateString;
                                 //Null Pointer 발생시 일시적으로 현재 시간을 넣는다.
                                 try {
-
                                   fictionCreationdateString = simpleDateFormat.format(fictionCreationdateDateType);
                                 }catch (Exception excetion){
                                     Date tempDate = new Date();
                                   fictionCreationdateString = simpleDateFormat.format(tempDate);
                                 }
-
                                 Fiction fiction = new Fiction(author, fictionTitle, fictionCategory, fictionCreationdateString,
-                                        fictionImgCoverPath, fictionLikeCount, fictionLastChapter+"장");
+                                        fictionImgCoverPath, String.valueOf(fictionLikes.size()), fictionLastChapter);
                                 fictionList.add(fiction);
 
                             }
@@ -144,13 +135,9 @@ public class WorkplaceFragment extends Fragment implements View.OnClickListener 
 
         return view;
     }
-
-
     @Override
     public void onClick(View v) {
         Intent intent = new Intent(getContext(), MakeFictionActivity.class);
         startActivity(intent);
     }
-
-
 }

@@ -14,12 +14,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".EditChapterActivity"></activity>
+        <activity android:name=".ReadFictionActivity"></activity>
+        <activity android:name=".PersonalAuthorActivity" />
+        <activity android:name=".ReadChapterActivity" />
+        <activity android:name=".ReaderBookInfo" />
+        <activity android:name=".EditChapterActivity" />
         <activity android:name=".MakeChapterActivity" />
         <activity android:name=".ChapterListActivity" />
         <activity android:name=".MakeFictionActivity" />
         <activity
-            android:name=".Splash"
+            android:name="com.example.splash.Splash"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme">
             <intent-filter>
@@ -28,9 +32,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".SignUpActivity" />
-        <activity android:name=".MainActivity" />
+        <activity android:name="com.example.login.LoginActivity" />
+        <activity android:name="com.example.login.SignUpActivity" />
+        <activity android:name="com.example.fragment.MainActivity" />
     </application>
 
 </manifest>

@@ -3,17 +3,33 @@ package com.example.object;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
+import com.bumptech.glide.Glide;
 import com.example.capston.ChapterListActivity;
 import com.example.capston.GlideApp;
 import com.example.capston.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -23,6 +39,7 @@ import java.util.List;
 public class FictionAdapter extends RecyclerView.Adapter<FictionAdapter.FictionViewHolder> {
 
     FirebaseStorage firebaseStorage;
+
 
     // Adapter란 Data 관리를 도와주고 list(RecyclerView)의 갱신을 관리하는 역활을한다.
     //리스트
@@ -53,7 +70,7 @@ public class FictionAdapter extends RecyclerView.Adapter<FictionAdapter.FictionV
         fictionViewHolder.fictioncategoryTextview.setText(fiction.getFictionCategory());
         fictionViewHolder.fictionLikeCountTextview.setText(String.valueOf(fiction.getFictionLikeCount()));
         fictionViewHolder.fictioncreationdateTextview.setText(fiction.getFictionCreationdate());
-        fictionViewHolder.fictionlastchapter.append(fiction.getFictionLastChapter());
+        fictionViewHolder.fictionlastchapter.setText("최근 연재:"+fiction.getFictionLastChapter()+"장");
 
         firebaseStorage = FirebaseStorage.getInstance();
         StorageReference storageRef = firebaseStorage.getReferenceFromUrl(fiction.getFictionImgCoverPath());
@@ -70,7 +87,7 @@ public class FictionAdapter extends RecyclerView.Adapter<FictionAdapter.FictionV
 
 
     //객체를 보여줄 뷰를 보관하는 내부 클래스.
-    static class FictionViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    static class FictionViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnCreateContextMenuListener {
         private TextView fictiontitleTextview;
         private TextView fictioncategoryTextview;
         private TextView fictioncreationdateTextview;
@@ -79,6 +96,9 @@ public class FictionAdapter extends RecyclerView.Adapter<FictionAdapter.FictionV
         private ImageView fictionLikeImageview;
         private ImageView fictionwriteImageview;
         private TextView fictionlastchapter;
+        private CardView fictionCardView;
+        FirebaseAuth mAuth;
+        FirebaseFirestore firestore;
 
         public FictionViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -94,9 +114,17 @@ public class FictionAdapter extends RecyclerView.Adapter<FictionAdapter.FictionV
             fictionLikeImageview = (ImageView)itemView.findViewById(R.id.item_fictionLike_imageview);
 
 
-            //
+            //연필 버튼.
             fictionwriteImageview=(ImageView)itemView.findViewById(R.id.item_fictionwrite_imageView);
             fictionwriteImageview.setOnClickListener(this);
+            // 전체를 둘러싸고 있는 카드뷰
+            fictionCardView = (CardView) itemView.findViewById(R.id.item_fictioncontainer_cardview);
+
+            itemView.setOnCreateContextMenuListener(this);
+        }
+
+        private void registerForContextMenu(View view) {
+            registerForContextMenu(view);
         }
 
 
@@ -116,5 +144,54 @@ public class FictionAdapter extends RecyclerView.Adapter<FictionAdapter.FictionV
            }
 
         }
+        @Override
+        public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+            //구성된 메뉴객체(contextMenu), 설정된 뷰의 주소값(TextView),contextmenu 내부의 정보를 가지고 있는 객체
+            menu.setHeaderTitle("소설과 하위챕터 모두 삭제.");
+            MenuItem delete =  menu.add(Menu.NONE,v.getId(),0,"삭제");
+            delete.setOnMenuItemClickListener(onMenuItemClickListener);
+        }
+
+        private final MenuItem.OnMenuItemClickListener onMenuItemClickListener = new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.item_fictioncontainer_cardview:
+                        firestore=FirebaseFirestore.getInstance();
+                        mAuth = FirebaseAuth.getInstance();
+                        final String userEmail = mAuth.getCurrentUser().getEmail();
+                        firestore.collection("user").document(userEmail)
+                                .collection("myworkspace").document(fictiontitleTextview.getText().toString())
+                                .delete()
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+
+                                    }
+                                });
+                        // 모든 북마크를 지운다.
+                        firestore.collection("user").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        DocumentReference docUserRef =document.getReference();
+                                        docUserRef.collection("mybookmark").document(userEmail+"_"+fictiontitleTextview.getText().toString()).delete();
+                                    }
+                                }
+                            }
+                        });
+                        break;
+                }
+                return false;
+            }
+        };
+
     }
 }

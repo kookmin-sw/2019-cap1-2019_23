@@ -10,10 +10,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.object.Chapter;
 import com.example.object.ChapterAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -27,7 +30,9 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Nullable;
 
@@ -44,12 +49,14 @@ public class ChapterListActivity extends AppCompatActivity implements View.OnCli
     Button fictionpublishButtion;
     String fictionImgCoverPath;
     String fictionLastChater;
+
     public String fictionTitle;
 
     // firebase database
     static FirebaseFirestore firestore;
     // 파이어베이스 인증 객체 생성
     static FirebaseAuth mAuth;
+    FirebaseUser user;
     // firebase storage
     static FirebaseStorage firebaseStorage;
 
@@ -75,9 +82,10 @@ public class ChapterListActivity extends AppCompatActivity implements View.OnCli
         chapterListWriteButton = (Button) findViewById(R.id.chapterlist_chapterwrite_buttion);
         chapterListWriteButton.setOnClickListener(this);
         fictionpublishButtion = (Button) findViewById(R.id.chapterlist_fictionpublish_buttion);
+        fictionpublishButtion.setOnClickListener(this);
         // firebase
         mAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = mAuth.getCurrentUser();
+        user = mAuth.getCurrentUser();
         String userEmail = user.getEmail();
         firestore = FirebaseFirestore.getInstance();
         firebaseStorage =FirebaseStorage.getInstance();
@@ -151,6 +159,25 @@ public class ChapterListActivity extends AppCompatActivity implements View.OnCli
                 intent.putExtra("fictionTitle",fictionTitle);
                 startActivity(intent);
                 break;
+            case R.id.chapterlist_fictionpublish_buttion:
+                // 전체 workspace
+                firestore.collection("user").document(user.getEmail())
+                        .collection("myworkspace").document(fictionTitle).update("published", true)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Log.d(TAG, "DocumentSnapshot successfully updated!");
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.w(TAG, "Error updating document", e);
+                            }
+                        });
+                Toast.makeText(ChapterListActivity.this,"소설의 연재가 시작되었습니다.",Toast.LENGTH_LONG).show();
+
+
         }
     }
 }

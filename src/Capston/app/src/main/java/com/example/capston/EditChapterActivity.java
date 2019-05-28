@@ -95,8 +95,6 @@ public class EditChapterActivity extends AppCompatActivity implements View.OnCli
                 }
             }
         });
-
-
     }
     @Override
     public void onClick(View v) {
@@ -104,7 +102,8 @@ public class EditChapterActivity extends AppCompatActivity implements View.OnCli
             switch (id){
                 case R.id.editchapteractivity_chapterclear_button:
                     chapterContents.setText("");
-
+                    Toast.makeText(this, "잘못눌렀다면 저장하지마시고 다시 챕터를 수정하세요.", Toast.LENGTH_LONG).show();
+                    break;
                 case R.id.editchapteractivity_chaptersave_button:
                     firestore.collection("user").document(userEmail)
                             .collection("myworkspace").document(fictionTitle)
@@ -167,18 +166,13 @@ public class EditChapterActivity extends AppCompatActivity implements View.OnCli
         }
         Toast.makeText(this, "TTS 설정완료.", Toast.LENGTH_SHORT).show();
     }
+
     @Override
-
     protected void onDestroy() {
-
         if (tts != null) {
-
             tts.stop();
-
             tts.shutdown();
-
         }
-
         super.onDestroy();
 
     }
