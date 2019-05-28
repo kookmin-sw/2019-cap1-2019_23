@@ -14,16 +14,38 @@
         android:layout_marginRight="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp"
         android:gravity="center"
+        android:background="@drawable/border"
         android:hint="chapter"
         android:padding="16dp"
-        android:textSize="20sp" />
-
+        android:textSize="24sp" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         >
+
+
+        <RadioGroup
+            android:id="@+id/readchapteractivity_voice_radiogroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+            <RadioButton
+                android:id="@+id/readchapteractivity_moon_RadioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="문재인 대통령"/>
+
+            <RadioButton
+                android:id="@+id/readchapteractivity_son_RadioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="손석희 앵커"/>
+        </RadioGroup>
+
 
         <Button
             android:id="@+id/readchapteractivity_tts_button"
@@ -34,8 +56,23 @@
             android:textColor="#ffffff"
             android:background="@drawable/buttonbackground"
             android:text="읽어주기" />
+        <Button
+            android:id="@+id/readchapteractivity_tts_stop_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="8dp"
+            android:textColor="#ffffff"
+            android:background="@drawable/buttonbackground2"
+            android:text="멈추기" />
+
+
 
     </LinearLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <TextView
         android:id="@+id/readchapteractivity_chaptercontents_textview"
         android:layout_width="match_parent"
@@ -43,10 +80,11 @@
         android:layout_marginTop="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:textSize="20sp"
+        android:layout_marginBottom="16dp"
+        android:textSize="16sp"
         android:gravity="start"
         android:hint="contents"
-        android:background="@null"
         android:lineSpacingExtra ="5dp"
         />
+    </ScrollView>
 </LinearLayout>

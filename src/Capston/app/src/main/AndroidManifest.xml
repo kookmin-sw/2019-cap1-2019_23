@@ -14,7 +14,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ReadFictionActivity"></activity>
+        <service
+            android:name="com.example.Audio.AudioService"
+            android:enabled="true"
+            android:exported="true"></service>
+
+        <activity android:name=".ReadFictionActivity" />
         <activity android:name=".PersonalAuthorActivity" />
         <activity android:name=".ReadChapterActivity" />
         <activity android:name=".ReaderBookInfo" />
