@@ -43,9 +43,7 @@
 The goal of this project is to create an app for people who love novels
 It is not easy for an ordinary person to publish novels. as a book. It is also impossible to read books that have not been published. With our apps, anyone can share their novels with others and get feedback from other users about the novel. It also provides an audiobook feature that allows you to read novels on the go using a smartphone. Anyone who likes and has interesting of a novels can freely share their works (novels) with others and act as writers in our app.
     
-## IV. 소개 영상
 
-
-## V.  결과 영상
-
+## IV.  결과 영상
+https://youtu.be/bZOIbOa-jnQ
 
