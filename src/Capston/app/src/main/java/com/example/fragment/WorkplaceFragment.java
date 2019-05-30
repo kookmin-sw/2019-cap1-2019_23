@@ -8,6 +8,8 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -61,7 +63,7 @@ public class WorkplaceFragment extends Fragment implements View.OnClickListener 
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view =inflater.inflate(R.layout.fragment_workplace, container, false);
-
+        setHasOptionsMenu(true);
         floatingActionButton = (FloatingActionButton) view.findViewById(R.id.main_writeButton);
         floatingActionButton.setOnClickListener(this);
 
@@ -140,4 +142,11 @@ public class WorkplaceFragment extends Fragment implements View.OnClickListener 
         Intent intent = new Intent(getContext(), MakeFictionActivity.class);
         startActivity(intent);
     }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.all_fragment_toolbar_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
 }

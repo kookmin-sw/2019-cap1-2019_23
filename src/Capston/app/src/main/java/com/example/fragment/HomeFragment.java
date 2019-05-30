@@ -7,6 +7,9 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -61,6 +64,7 @@ public class HomeFragment extends Fragment  {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View view=inflater.inflate(R.layout.fragment_home, container, false);
+        setHasOptionsMenu(true);
         MainActivity mainActivity = (MainActivity) getActivity();
         final String userEmail = mainActivity.mAuth.getCurrentUser().getEmail();
         //추천 소설 리스트
@@ -171,5 +175,11 @@ public class HomeFragment extends Fragment  {
         return view;
     }
 
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.all_fragment_toolbar_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
 
 }

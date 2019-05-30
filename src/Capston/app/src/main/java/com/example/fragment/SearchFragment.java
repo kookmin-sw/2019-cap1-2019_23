@@ -5,7 +5,11 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -40,13 +44,12 @@ public class SearchFragment extends Fragment {
         // Required empty public constructor
     }
 
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view =inflater.inflate(R.layout.fragment_searchfragment, container, false);
+        setHasOptionsMenu(true);
         //서버 연동(메인엑티비티에서 가져온다.)
         MainActivity mainActivity = (MainActivity) getActivity();
         //현재유저
@@ -111,6 +114,31 @@ public class SearchFragment extends Fragment {
             }
         });
         return view;
+    }
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.search_fragment_toolbar_menu, menu);
+        MenuItem searchItem = menu.findItem(R.id.item1);
+        // 액션 뷰로 설정된 뷰를 추출한다.
+        SearchView searchView = (SearchView) searchItem.getActionView();
+        // 안내문구 설정
+        searchView.setQueryHint("검색어를 입력하세요");
+        // 서치뷰의 리스너 설정을 해줘야 fragment에서 검색을 실제로 할수있다.
+        searchView.onActionViewExpanded(); //바로 검색 할 수 있도록
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                //Toast.makeText(getContext(),"텍스트 제출",Toast.LENGTH_LONG).show();
+                publishedFictionAdapter.setFilter(s);
+                return true;
+            }
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
+            }
+        });
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
 }

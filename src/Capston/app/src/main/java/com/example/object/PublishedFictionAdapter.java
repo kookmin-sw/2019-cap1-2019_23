@@ -14,6 +14,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestManager;
 import com.example.capston.GlideApp;
 import com.example.capston.R;
 import com.example.capston.ReaderBookInfo;
@@ -30,6 +32,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,6 +50,11 @@ public class PublishedFictionAdapter extends RecyclerView.Adapter<PublishedFicti
         this.publishedFictionList = publishedFictionList;
         this.context= context;
     }
+
+    static void loadImage(RequestManager glide,StorageReference storageRef, ImageView view) {
+        glide.load(storageRef).into(view);
+    }
+
     @NonNull
     @Override
     public PublishedFictionViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
@@ -86,19 +94,57 @@ public class PublishedFictionAdapter extends RecyclerView.Adapter<PublishedFicti
             publishedFictionViewHolder.isUserBookMark= false;
         }
 
-        PublishedFictionViewHolder.publishedFictioncoverImageview.setImageDrawable(null);
 
         firebaseStorage = FirebaseStorage.getInstance();
         StorageReference storageRef = firebaseStorage.getReferenceFromUrl(publishedFiction.getFictionImgCoverPath());
+
+        loadImage(Glide.with(context),storageRef,publishedFictionViewHolder.publishedFictioncoverImageview);
+        /*
         GlideApp.with(context)
                 .load(storageRef)
                 .override(200,200)
                 .into(PublishedFictionViewHolder.publishedFictioncoverImageview);
-
+        */
     }
     @Override
     public int getItemCount() {
         return publishedFictionList.size();
+    }
+
+    @Override
+    public void onViewRecycled(@NonNull PublishedFictionViewHolder holder) {
+        Glide.with(context).clear(holder.publishedFictioncoverImageview);
+        super.onViewRecycled(holder);
+    }
+
+    //이부분 중요!! 검색 리스트를 나오게하기 위해 꼭 필요
+    public void setFilter(String query) {
+        query = query.toLowerCase();
+
+        List<PublishedFiction> filteredNoticeList = new ArrayList<>();
+
+        if (query != null && !query.equals("")) {
+            for (PublishedFiction model : publishedFictionList) {
+                final String title = model.getFictionTitle().toLowerCase();
+
+                if (title.contains(query)) {
+                    filteredNoticeList.add(model);
+                }
+            }
+        }
+
+        publishedFictionList.clear();
+        publishedFictionList.addAll(filteredNoticeList);
+        notifyDataSetChanged();
+    }
+
+
+    public List<PublishedFiction> getPublishedFictionList() {
+        return publishedFictionList;
+    }
+
+    public void setPublishedFictionList(List<PublishedFiction> publishedFictionList) {
+        this.publishedFictionList = publishedFictionList;
     }
 
     static class PublishedFictionViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -108,7 +154,7 @@ public class PublishedFictionAdapter extends RecyclerView.Adapter<PublishedFicti
         private TextView publishedFictioncLastchaterTextView;
         private TextView publishedFicttionLikeCount;
 
-        private static ImageView publishedFictioncoverImageview;
+        private ImageView publishedFictioncoverImageview;
         private ImageView publishedfictionLikeImageview;
         private ImageView publishedFictionINFO;
         private ImageView publishedFictionBookMark;

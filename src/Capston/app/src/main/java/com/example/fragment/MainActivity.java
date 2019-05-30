@@ -32,6 +32,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.capston.GlideApp;
 import com.example.capston.R;
 import com.example.login.LoginActivity;
+import com.example.object.PublishedFiction;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -41,6 +42,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
@@ -193,10 +197,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
     //toolbar메뉴 생성.
+
+/*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main_appbar, menu);
+        inflater.inflate(R.menu.search_fragment_toolbar_menu, menu);
         // 검색뷰가 설정되어있는 메뉴 항목객체 추출
         MenuItem searchItem = menu.findItem(R.id.item1);
         // 액션 뷰로 설정된 뷰를 추출한다.
@@ -204,13 +210,35 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // 안내문구 설정
         searchView.setQueryHint("검색어를 입력하세요");
         // 서치뷰의 리스너 설정을 해줘야 fragment에서 검색을 실제로 할수있다.
+        searchView.onActionViewExpanded(); //바로 검색 할 수 있도록
+
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                Toast.makeText(MainActivity.this,"텍스트 제출",Toast.LENGTH_LONG).show();
+                //프레그먼트 교체
+                transaction.replace(R.id.frame_layout, searchFragment).commitAllowingStateLoss();
+                //프레그먼트에 맞는 툴바 출력.
+                toolbar_TextView.setText("검색");
+                searchFragment.publishedFictionAdapter.setFilter(s);
+                return true;
+            }
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
+            }
+        });
+
         return true;
     }
+
+*/
     // 햄버거 버튼으로 navigationView 오픈
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
         switch (id) {
             case android.R.id.home:
                 drawerLayout.openDrawer(GravityCompat.START);
@@ -248,7 +276,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             }
         }
-
         return false;
     }
     // 리턴받은 인텐트 처리.

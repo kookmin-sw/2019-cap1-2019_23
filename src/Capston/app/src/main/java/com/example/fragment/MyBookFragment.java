@@ -6,6 +6,8 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -46,7 +48,7 @@ public class MyBookFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view =inflater.inflate(R.layout.fragment_mybookfragment, container, false);
-
+        setHasOptionsMenu(true);
         //서버 연동(메인엑티비티에서 가져온다.)
         MainActivity mainActivity = (MainActivity) getActivity();
         //현재유저
@@ -123,6 +125,12 @@ public class MyBookFragment extends Fragment {
         });
 
         return view;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.all_fragment_toolbar_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
 }

@@ -43,6 +43,7 @@
             android:layout_height="match_parent"
             android:layout_marginTop="?actionBarSize"
             android:layout_marginBottom="?attr/actionBarSize" />
+
         <android.support.design.widget.BottomNavigationView
             android:id="@+id/bottom_navigation_view"
             android:layout_width="match_parent"
